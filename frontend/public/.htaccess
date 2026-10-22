@@ -1,0 +1,98 @@
+# ====================================================================
+# SarkariJobAlerts.com - Master Production .htaccess for Hostinger
+# Supports: HTTPS Enforcement, index.html Redirect, Gzip, Caching & Security
+# ====================================================================
+
+# ====================================================================
+# AcceptPathInfo: Allow trailing slashes on files so mod_rewrite can normalize them without 404
+# ====================================================================
+AcceptPathInfo On
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Normalize trailing slashes on files with extensions (e.g. /llms.txt/ -> /llms.txt, /robots.txt/ -> /robots.txt)
+  RewriteRule ^(llms\.txt|llms-full\.txt|robots\.txt|sitemap\.xml)/+$ https://sarkarijobalerts.com/$1 [R=301,L,NC]
+  RewriteRule ^(.*)\.(txt|xml|json|ico|png|jpg|jpeg|svg|css|js|webp)/+$ https://sarkarijobalerts.com/$1.$2 [R=301,L,NC]
+
+  # 2. Redirect /index.html to Root Domain (301 Permanent Redirect for SEO)
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/ [NC]
+  RewriteRule ^index\.html$ https://sarkarijobalerts.com/ [R=301,L]
+
+  # 3. Force Canonical non-WWW Domain & HTTPS Protocol (Unified 301 to eliminate redirect chains)
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^(.*)$ https://sarkarijobalerts.com/$1 [R=301,L]
+
+  # 4. Trailing Slash Normalization for Sub-Pages & Categories (Excludes Static Files & API Routes)
+  RewriteCond %{REQUEST_URI} !^/api/ [NC]
+  RewriteCond %{REQUEST_URI} !\.(txt|xml|json|ico|png|jpg|jpeg|svg|css|js|webp)$ [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} !(.*)/$
+  RewriteRule ^(.*)$ https://sarkarijobalerts.com/$1/ [R=301,L]
+
+  # 5. Serve Folder index.html if Directory Exists
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.*)$ $1/index.html [L]
+
+  # 6. Serve Clean .html Files if Requested Without Extension
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^(.*)$ $1.html [L]
+</IfModule>
+
+# ====================================================================
+# Custom Error Documents
+# ====================================================================
+ErrorDocument 404 /404.html
+
+# ====================================================================
+# Performance Optimization: Gzip Compression (mod_deflate)
+# ====================================================================
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/x-javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# ====================================================================
+# Performance Optimization: Browser Caching (mod_expires)
+# ====================================================================
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+
+  # Images & WebP
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # CSS, JavaScript & Fonts
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
+  ExpiresByType font/ttf "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+
+  # HTML & Data Feeds
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/json "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+</IfModule>
+
+# ====================================================================
+# Security & SEO Robots Headers
+# ====================================================================
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Robots-Tag "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+</IfModule>
+

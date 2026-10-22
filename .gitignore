@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+backend/config/google-service-account.json
+
+# Next.js & Build Outputs
+.next/
+*/.next/
+out/
+*/out/
+
+# Archives & Temporary files
+*.zip
+*.tar.gz
+*.tgz
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+sarkarijobalerts_linux_clean/
+.kilo/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

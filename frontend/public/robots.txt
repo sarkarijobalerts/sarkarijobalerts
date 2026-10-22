@@ -1,0 +1,24 @@
+# Robots.txt for sarkarijobalerts.com
+User-agent: *
+Allow: /
+Allow: /job/
+Allow: /latest-jobs/
+Allow: /admit-cards/
+Allow: /results/
+Allow: /answer-key/
+Allow: /syllabus/
+Allow: /about/
+Allow: /contact/
+Allow: /privacy-policy/
+Allow: /terms-and-conditions/
+Allow: /disclaimer/
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+# Block internal APIs and Next.js internal build assets
+Disallow: /api/
+Disallow: /_next/
+Disallow: /OneSignalSDKWorker.js
+
+# Sitemaps
+Sitemap: https://sarkarijobalerts.com/sitemap.xml

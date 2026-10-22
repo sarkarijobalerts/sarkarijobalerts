@@ -1,0 +1,80 @@
+server {
+    listen 80;
+    server_name sarkarijobalerts.com www.sarkarijobalerts.com;
+
+    # Redirect HTTP to HTTPS non-www canonical
+    return 301 https://sarkarijobalerts.com$request_uri;
+}
+
+# Redirect HTTPS www to non-www canonical
+server {
+    listen 443 ssl http2;
+    server_name www.sarkarijobalerts.com;
+
+    ssl_certificate /etc/letsencrypt/live/sarkarijobalerts.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sarkarijobalerts.com/privkey.pem;
+
+    return 301 https://sarkarijobalerts.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name sarkarijobalerts.com;
+
+    # SSL Certificates (managed via Certbot)
+    ssl_certificate /etc/letsencrypt/live/sarkarijobalerts.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sarkarijobalerts.com/privkey.pem;
+
+    # Gzip Compression
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
+
+    # Global SEO & Robots Headers
+    add_header X-Robots-Tag "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" always;
+
+    # Custom 404 Error Page Handling
+    error_page 404 /404.html;
+
+    # 301 Permanent Redirects for Legacy / Moved URL Paths
+    location ~* ^/jobs/?$ {
+        return 301 https://sarkarijobalerts.com/latest-jobs/;
+    }
+
+    location ~* ^/admit-card/?$ {
+        return 301 https://sarkarijobalerts.com/admit-cards/;
+    }
+
+    location ~* ^/result/?$ {
+        return 301 https://sarkarijobalerts.com/results/;
+    }
+
+    location ~* ^/job-alerts/?$ {
+        return 301 https://sarkarijobalerts.com/latest-jobs/;
+    }
+
+    # Next.js Frontend (Port 3000)
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Express Backend API (Port 5000)
+    location /api {
+        proxy_pass http://localhost:5000/api;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

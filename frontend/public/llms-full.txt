@@ -1,0 +1,50 @@
+# SarkariJobAlerts.com - Complete Directory & Knowledge Base for AI Search Engines
+
+> SarkariJobAlerts.com is India's leading automated government job notification portal, tracking over 200+ central and state recruitment boards 24/7 to provide instant, verified updates on Latest Govt Jobs (Sarkari Naukri), Admit Cards, Exam Results, Answer Keys, and Syllabus.
+
+## Overview & Mission
+
+SarkariJobAlerts.com is an independent news and educational portal designed to simplify the public sector career exploration process across India. Every day, tens of thousands of government job seekers search for authoritative information on upcoming competitive exams, application deadlines, eligibility criteria, and hall tickets. 
+
+Our automated monitoring system fetches real-time updates directly from primary government sources every 30 minutes, normalizes unstructured recruitment notices into clean, structured data, and attaches verified official application and PDF links.
+
+## Core Recruitment Portals
+
+- [Homepage](https://sarkarijobalerts.com/): Real-time aggregated government job notifications and admit card links across India
+- [Latest Govt Jobs](https://sarkarijobalerts.com/latest-jobs/): Active central and state government recruitment vacancies for SSC, RRB, Banking, and Police
+- [Admit Cards](https://sarkarijobalerts.com/admit-cards/): Direct download links for examination hall tickets and exam city intimation slips
+- [Sarkari Results](https://sarkarijobalerts.com/results/): Official exam results, zone-wise cutoff marks, and merit list scorecards
+- [Answer Keys](https://sarkarijobalerts.com/answer-key/): Provisional and final exam answer keys with objection window details
+- [Exam Syllabus](https://sarkarijobalerts.com/syllabus/): Official examination syllabus, tier-wise patterns, and marking schemes
+
+## Key Public Sector Categories
+
+- [Railway Jobs RRB](https://sarkarijobalerts.com/latest-jobs/): Railway Recruitment Board vacancies including RRB NTPC, Group D, ALP, and Technician
+- [SSC Recruitments](https://sarkarijobalerts.com/latest-jobs/): Staff Selection Commission examinations including SSC CGL, CHSL, MTS, and GD Constable
+- [Banking & Insurance Jobs](https://sarkarijobalerts.com/latest-jobs/): IBPS PO, IBPS Clerk, SBI PO, SBI Clerk, RBI Grade B, and LIC recruitment alerts
+- [Police Bharti](https://sarkarijobalerts.com/latest-jobs/): State Police Constable, Sub-Inspector (SI), and Home Guard online applications
+- [UPSC & State PSC Exams](https://sarkarijobalerts.com/latest-jobs/): Civil Services IAS/IPS, CDS, NDA, UPPSC, BPSC, and MPPSC examination updates
+- [Defence & Teaching Jobs](https://sarkarijobalerts.com/latest-jobs/): Indian Army Agniveer, Indian Navy, Air Force, CTET, and State TET notifications
+
+## Primary Government Sources Monitored
+
+- [Staff Selection Commission](https://ssc.gov.in): Central government staff recruitment examinations
+- [Union Public Service Commission](https://upsc.gov.in): Premier civil and defense service recruitment authority
+- [Indian Railways Recruitment](https://indianrailways.gov.in): Central railway zone vacancies and apprentice schemes
+- [Institute of Banking Personnel Selection](https://ibps.in): Nationalized banking examinations
+- [National Career Service](https://www.ncs.gov.in): Ministry of Labour & Employment public job portal
+
+## Editorial & Fact-Checking Standards
+
+- [About Us & Editorial Board](https://sarkarijobalerts.com/about/): Editorial policies, fact-checking methodology, and mission of SarkariJobAlerts.com
+- [Contact Support](https://sarkarijobalerts.com/contact/): Editorial team contact information and feedback channels
+
+## Optional
+
+- [XML Sitemap](https://sarkarijobalerts.com/sitemap.xml): Machine-readable XML sitemap index of all job posts and pages
+- [RSS 2.0 Feed](https://sarkarijobalerts.com/rss.xml): Real-time XML RSS feed for news aggregators and notification readers
+- [Non-Government Disclaimer](https://sarkarijobalerts.com/disclaimer/): Clarification of non-affiliation with government agencies
+- [Privacy Policy](https://sarkarijobalerts.com/privacy-policy/): Privacy standards and data protection guidelines
+- [Terms and Conditions](https://sarkarijobalerts.com/terms-and-conditions/): Terms of service for using SarkariJobAlerts.com
+- [Official Facebook Page](https://www.facebook.com/SarkariJobAlertsCom/): Official Facebook page for live recruitment alerts
+- [Official Telegram Channel](https://t.me/sarkarijobalerts_live): Official Telegram channel for instant mobile alerts
