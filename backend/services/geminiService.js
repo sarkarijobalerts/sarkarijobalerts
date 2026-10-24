@@ -127,7 +127,7 @@ export async function processScrapedDataWithGemini(rawScrapedText) {
     });
 
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Gemini API timeout (12s exceeded)')), 12000)
+      setTimeout(() => reject(new Error('Gemini API timeout (35s exceeded)')), 35000)
     );
 
     const response = await Promise.race([generatePromise, timeoutPromise]);

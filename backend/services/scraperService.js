@@ -1,3 +1,4 @@
+import fs from 'fs';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import * as cheerio from 'cheerio';
@@ -64,7 +65,24 @@ export function sanitizeTableCell(text, maxLen = 120) {
  */
 async function getBrowserInstance() {
   console.log('[PHASE A: PUPPETEER LAUNCH] Launching chromium in stealth mode...');
-  return await puppeteer.launch({
+  const possiblePaths = [
+    process.env.CHROME_PATH,
+    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+    'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+    '/usr/bin/google-chrome',
+    '/usr/bin/chromium-browser',
+  ].filter(Boolean);
+
+  let executablePath = undefined;
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      executablePath = p;
+      break;
+    }
+  }
+
+  const launchOptions = {
     headless: true,
     args: [
       '--no-sandbox',
@@ -72,7 +90,13 @@ async function getBrowserInstance() {
       '--disable-blink-features=AutomationControlled',
       '--window-size=1920,1080',
     ],
-  });
+  };
+
+  if (executablePath) {
+    launchOptions.executablePath = executablePath;
+  }
+
+  return await puppeteer.launch(launchOptions);
 }
 
 /**
@@ -84,7 +108,7 @@ async function fetchPageHtml(targetUrl, ua) {
     browser = await getBrowserInstance();
     const page = await browser.newPage();
     await page.setUserAgent(ua);
-    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 35000 });
+    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 25000 });
     const content = await page.content();
     if (content && content.length > 500) {
       return content;
@@ -101,6 +125,7 @@ async function fetchPageHtml(targetUrl, ua) {
         'User-Agent': ua,
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       },
+      signal: AbortSignal.timeout(10000),
     });
     if (res.ok) {
       const html = await res.text();
