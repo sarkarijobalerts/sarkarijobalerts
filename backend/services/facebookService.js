@@ -36,8 +36,13 @@ export async function sendFacebookPost(jobData) {
     console.error(`[Facebook Exception] Failed to send Facebook Page message: ${error.message}`);
   }
 
-  // 2. Post to Facebook Group (if group ID is provided)
-  if (groupId) {
+  // 2. Post to Facebook Group (only if a distinct numeric group ID is provided)
+  const isDuplicatePageHandle = groupId && (
+    groupId.toLowerCase() === 'sarkarijobalertscom' ||
+    groupId === pageId
+  );
+
+  if (groupId && !isDuplicatePageHandle && /^\d+$/.test(groupId)) {
     try {
       console.log(`[Facebook Service] Posting to group ${groupId}: "${title}"...`);
       const response = await fetch(`https://graph.facebook.com/v19.0/${groupId}/feed`, {
@@ -58,5 +63,8 @@ export async function sendFacebookPost(jobData) {
     }
   }
 
-  return results;
+  return {
+    ...results,
+    id: results.pagePost ? results.pagePost.id : (results.groupPost ? results.groupPost.id : null),
+  };
 }
