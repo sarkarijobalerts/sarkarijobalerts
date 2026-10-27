@@ -33,12 +33,7 @@ export default function SiteEntitySchema() {
           'https://www.facebook.com/groups/sarkarijobalertscom',
           'https://t.me/sarkarijobalerts_live',
           'https://x.com/SarkariJobAlert',
-          'https://www.wikidata.org/wiki/Q11019',
-          'https://en.wikipedia.org/wiki/Staff_Selection_Commission',
-          'https://en.wikipedia.org/wiki/Union_Public_Service_Commission',
-          'https://en.wikipedia.org/wiki/Railway_Recruitment_Control_Board',
-          'https://en.wikipedia.org/wiki/Institute_of_Banking_Personnel_Selection',
-          'https://en.wikipedia.org/wiki/National_Career_Service_(India)',
+          'https://www.linkedin.com/company/sarkarijobalerts',
         ],
         contactPoint: {
           '@type': 'ContactPoint',

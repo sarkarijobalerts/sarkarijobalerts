@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import seedPosts from '../../lib/seedPosts.json';
+import CollectionPageSchema from '../../components/CollectionPageSchema';
 import { Briefcase, ArrowRight, Building2, Calendar, Tag, ArrowLeft } from 'lucide-react';
 
 export const dynamic = 'force-static';
@@ -40,7 +41,14 @@ export default function SyllabusPage() {
   const jobs = seedPosts.filter((p) => p.category === 'Syllabus');
 
   return (
-    <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <CollectionPageSchema
+        title="Exam Syllabus 2026 – Pattern & Scheme"
+        description="Explore all latest exam syllabus for government job exams 2026 across SSC, Railway, Banking, Defense, Police Bharti, and State PSC recruitments."
+        url="https://sarkarijobalerts.com/syllabus/"
+        items={jobs}
+      />
+
       {/* Back Button */}
       <Link
         href="/"
@@ -122,6 +130,6 @@ export default function SyllabusPage() {
           </div>
         ))}
       </div>
-    </article>
+    </div>
   );
 }

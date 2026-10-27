@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import seedPosts from '../../lib/seedPosts.json';
+import CollectionPageSchema from '../../components/CollectionPageSchema';
 import { CreditCard, ArrowRight, Building2, Calendar, ArrowLeft } from 'lucide-react';
 
 export const dynamic = 'force-static';
@@ -40,7 +41,14 @@ export default function AdmitCardsPage() {
   const cards = seedPosts.filter((p) => p.category === 'Admit Cards');
 
   return (
-    <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <CollectionPageSchema
+        title="Sarkari Exam Admit Cards 2026 – Download Hall Ticket"
+        description="Download e-Admit Cards, exam hall tickets, and city intimation slips for UPSC, SSC, Railway RRB, IBPS, and State PSC competitive examinations."
+        url="https://sarkarijobalerts.com/admit-cards/"
+        items={cards}
+      />
+
       {/* Back Button */}
       <Link
         href="/"
@@ -122,6 +130,6 @@ export default function AdmitCardsPage() {
           </div>
         ))}
       </div>
-    </article>
+    </div>
   );
 }

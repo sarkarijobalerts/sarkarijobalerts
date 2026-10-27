@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import seedPosts from '../../lib/seedPosts.json';
+import CollectionPageSchema from '../../components/CollectionPageSchema';
 import { Trophy, ArrowRight, Building2, Calendar, ArrowLeft } from 'lucide-react';
 
 export const dynamic = 'force-static';
@@ -40,7 +41,14 @@ export default function ResultsPage() {
   const results = seedPosts.filter((p) => p.category === 'Results');
 
   return (
-    <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <CollectionPageSchema
+        title="Sarkari Results 2026 – Cutoff & Merit List"
+        description="Check official government exam results, zone-wise cutoff lists, merit PDFs, and scorecards for RRB NTPC, UP Police, SSC, UGC NET, and Board Exams."
+        url="https://sarkarijobalerts.com/results/"
+        items={results}
+      />
+
       {/* Back Button */}
       <Link
         href="/"
@@ -122,6 +130,6 @@ export default function ResultsPage() {
           </div>
         ))}
       </div>
-    </article>
+    </div>
   );
 }

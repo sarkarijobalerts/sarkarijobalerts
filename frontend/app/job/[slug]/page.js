@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import JobPostingSchema from '../../../components/JobPostingSchema';
+import ArticleSchema from '../../../components/ArticleSchema';
 import FAQSchema from '../../../components/FAQSchema';
 import seedPosts from '../../../lib/seedPosts.json';
 import expiredSlugs from '../../../lib/expiredSlugs.json';
@@ -152,14 +153,15 @@ export default async function JobDetailPage({ params }) {
   const links = rawLinks
     .map((l) => {
       let url = l.url;
-      if (!url || !url.startsWith('http')) {
-        url = 'https://sarkarijobalerts.com/';
-      } else if (url.startsWith('http://')) {
+      if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+        return null;
+      }
+      if (url.startsWith('http://')) {
         url = url.replace('http://', 'https://');
       }
       return { ...l, url };
     })
-    .filter((l) => l.url !== 'https://sarkarijobalerts.com/' || l.label);
+    .filter(Boolean);
 
   const applySteps = post.howToApply || [];
 
@@ -192,6 +194,9 @@ export default async function JobDetailPage({ params }) {
 
   return (
     <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      {/* Schema.org NewsArticle Structured Data (Machine Readability & AI Discoverability) */}
+      <ArticleSchema post={post} />
+
       {/* Schema.org JobPosting Structured Data */}
       <JobPostingSchema post={post} />
 
