@@ -42,7 +42,7 @@ export default function ArticleSchema({ post }) {
     headline: titleText.slice(0, 110),
     description: descText.slice(0, 200),
     image: [
-      'https://sarkarijobalerts.com/og-banner.png',
+      'https://sarkarijobalerts.com/sarkari-job.jpg',
     ],
     datePublished,
     dateModified,

@@ -34,9 +34,9 @@ export const metadata = {
     siteName: 'SarkariJobAlerts',
     images: [
       {
-        url: 'https://sarkarijobalerts.com/og-banner.png',
+        url: 'https://sarkarijobalerts.com/sarkari-job.jpg',
         width: 1200,
-        height: 630,
+        height: 675,
         alt: 'Sarkari Result & Sarkari Naukri 2026 – SarkariJobAlerts.com',
       },
     ],
@@ -49,7 +49,7 @@ export const metadata = {
     creator: '@SarkariJobAlert',
     title: 'Sarkari Result & Sarkari Naukri 2026 – Latest Govt Jobs, Apply Online Govt Jobs',
     description: 'Sarkari Job Alerts 2026: Get real-time sarkari naukri notifications, sarkari result updates, and admit card links.',
-    images: ['https://sarkarijobalerts.com/og-banner.png'],
+    images: ['https://sarkarijobalerts.com/sarkari-job.jpg'],
   },
   alternates: {
     canonical: 'https://sarkarijobalerts.com/',

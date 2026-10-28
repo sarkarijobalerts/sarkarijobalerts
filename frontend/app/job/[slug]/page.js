@@ -98,7 +98,7 @@ export async function generateMetadata({ params }) {
     description = description.slice(0, 152).trim() + '...';
   }
 
-  const staticBannerUrl = 'https://sarkarijobalerts.com/og-banner.png';
+  const staticBannerUrl = 'https://sarkarijobalerts.com/sarkari-job.jpg';
 
   return {
     title: {
@@ -117,8 +117,8 @@ export async function generateMetadata({ params }) {
         {
           url: staticBannerUrl,
           width: 1200,
-          height: 630,
-          alt: 'SarkariJobAlerts.com Official Banner',
+          height: 675,
+          alt: `${cleanText(post.rewrittenTitle || post.title || 'Sarkari Job Alert', 100)} - SarkariJobAlerts.com`,
         },
       ],
       locale: 'en_IN',
@@ -248,6 +248,16 @@ export default async function JobDetailPage({ params }) {
               </time>
             </span>
           </div>
+        </div>
+
+        {/* FEATURED BANNER IMAGE */}
+        <div className="w-full border-b-2 border-slate-700 bg-slate-900/60 overflow-hidden flex justify-center">
+          <img
+            src="/sarkari-job.jpg"
+            alt={`${postTitle} - Sarkari Job Alerts`}
+            className="w-full max-h-[420px] object-cover"
+            loading="eager"
+          />
         </div>
 
         {/* SHORT INFORMATION SUMMARY */}

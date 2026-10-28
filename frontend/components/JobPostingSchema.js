@@ -139,6 +139,7 @@ export default function JobPostingSchema({ post }) {
     '@type': 'JobPosting',
     title: titleText,
     description: richDescription,
+    image: 'https://sarkarijobalerts.com/sarkari-job.jpg',
     identifier: {
       '@type': 'PropertyValue',
       name: orgName,

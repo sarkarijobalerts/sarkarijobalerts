@@ -63,23 +63,38 @@ async function runManualFullUpdate() {
         try {
           aiResult = await processScrapedDataWithGemini(rawData);
         } catch (geminiErr) {
-          console.error(`   ❌ Gemini API Error: ${geminiErr.message}. Falling back to raw structured details.`);
+          const cleanShortInfo = (rawData.shortInfo && !rawData.shortInfo.toLowerCase().includes('sarkari result') && rawData.shortInfo.length > 25)
+            ? rawData.shortInfo
+            : `${rawData.title} recruitment notification details, eligibility criteria, vacancy breakdown, and official direct application links.`;
+
+          const cleanVacancies = (rawData.vacancyDetails || []).filter(v => {
+            const p = (v.postName || '').toLowerCase();
+            return !p.includes('name of post') && !p.includes('post date') && !p.includes('short info') && !p.includes('android app') && !p.includes('sarkari') && !p.includes('download notification') && !p.includes('apply online') && !p.includes('official website');
+          });
+
+          const cleanLinks = (rawData.officialLinks || []).map(l => {
+            if (!l.url || l.url.includes('sarkariresult.com')) {
+              return { label: 'Official Recruitment Portal', url: rawData.sourceUrl || 'https://sarkarijobalerts.com/' };
+            }
+            return { label: l.linkTitle || l.label || 'Official Link', url: l.url };
+          });
+
           aiResult = {
             seo: {
               metaTitle: rawData.title,
-              metaDescription: rawData.shortInfo,
+              metaDescription: cleanShortInfo,
               slug: item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
               primaryKeyword: item.title,
             },
             jobDetails: {
               title: rawData.title,
-              shortInfo: rawData.shortInfo,
+              shortInfo: cleanShortInfo,
               importantDates: rawData.importantDates,
               applicationFee: rawData.applicationFee,
-              vacanciesTable: rawData.vacancyDetails,
-              importantLinks: rawData.officialLinks,
+              vacanciesTable: cleanVacancies.length > 0 ? cleanVacancies : [{ postName: rawData.title, totalPost: 'Various', eligibility: 'Passed relevant qualification from recognized board/university.' }],
+              importantLinks: cleanLinks,
               ageLimit: rawData.ageLimit,
-              howToApply: ['Refer official notification details and link.'],
+              howToApply: ['Read official notification carefully before applying online.', 'Submit application on official portal.'],
               organizationName: rawData.organization,
               postName: rawData.title,
               totalVacancies: 'Various',
