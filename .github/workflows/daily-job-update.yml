@@ -71,29 +71,38 @@ jobs:
           cd backend
           node scripts/manualFullUpdate.js
 
-      - name: 💾 Commit & Push Updated Dataset to Repository
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add frontend/lib/seedPosts.json frontend/lib/expiredSlugs.json
-          if git diff --staged --quiet; then
-            echo "No new jobs found. Skipping commit."
-          else
-            git commit -m "Auto-update job posts $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
-            git push
-          fi
-
       - name: 🏗️ Build Static Frontend & Generate Sitemap
         run: |
           cd frontend
           npm run build
 
+      - name: 💾 Commit & Push Updated Dataset to Repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add frontend/lib/seedPosts.json frontend/lib/expiredSlugs.json frontend/public/sitemap.xml
+          if git diff --staged --quiet; then
+            echo "No changes found to commit. Skipping commit."
+          else
+            git commit -m "Auto-update job posts & sitemap $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push
+          fi
+
+      - name: 🔍 Check Hostinger Deployment Credentials
+        run: |
+          if [ -z "${{ secrets.HOSTINGER_FTP_PASSWORD || secrets.FTP_PASSWORD }}" ]; then
+            echo "::warning title=Missing Hostinger FTP Password::HOSTINGER_FTP_PASSWORD secret is not set in GitHub repository secrets. FTPS deployment will be skipped. To enable automated Hostinger deployment from GitHub Actions, add HOSTINGER_FTP_PASSWORD to GitHub Repo Settings -> Secrets and variables -> Actions."
+          else
+            echo "Hostinger FTPS credentials detected. Proceeding with deployment."
+          fi
+
       - name: 🚀 Deploy to Hostinger via FTPS
+        if: ${{ secrets.HOSTINGER_FTP_PASSWORD != '' || secrets.FTP_PASSWORD != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server: ${{ secrets.HOSTINGER_FTP_SERVER || secrets.FTP_SERVER || 'ftp.sarkarijobalerts.com' }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME || secrets.FTP_USERNAME || 'u340027669' }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD || secrets.FTP_PASSWORD }}
           local-dir: ./frontend/out/
           server-dir: ${{ secrets.HOSTINGER_FTP_DIR || 'domains/sarkarijobalerts.com/public_html/' }}
           dangerous-clean-slate: false
