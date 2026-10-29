@@ -13,7 +13,9 @@ jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
+    env:
+      HOSTINGER_FTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
     steps:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
@@ -89,20 +91,20 @@ jobs:
           fi
 
       - name: 🔍 Check Hostinger Deployment Credentials
-      run: |
-        if [ -z "${{ secrets.HOSTINGER_FTP_PASSWORD || secrets.FTP_PASSWORD }}" ]; then
-          echo "::warning title=Missing Hostinger FTP Password::HOSTINGER_FTP_PASSWORD secret is not set in GitHub repository secrets. FTPS deployment will be skipped. To enable automated Hostinger deployment from GitHub Actions, add HOSTINGER_FTP_PASSWORD to GitHub Repo Settings -> Secrets and variables -> Actions."
-        else
-          echo "Hostinger FTPS credentials detected. Proceeding with deployment."
-        fi
+        run: |
+          if [ -z "$HOSTINGER_FTP_PASSWORD" ] && [ -z "$FTP_PASSWORD" ]; then
+            echo "::warning title=Missing Hostinger FTP Password::HOSTINGER_FTP_PASSWORD secret is not set in GitHub repository secrets. FTPS deployment will be skipped. To enable automated Hostinger deployment from GitHub Actions, add HOSTINGER_FTP_PASSWORD to GitHub Repo Settings -> Secrets and variables -> Actions."
+          else
+            echo "Hostinger FTPS credentials detected. Proceeding with deployment."
+          fi
 
-    - name: 🚀 Deploy to Hostinger via FTPS
-      if: secrets.HOSTINGER_FTP_PASSWORD != '' || secrets.FTP_PASSWORD != ''
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.HOSTINGER_FTP_SERVER || secrets.FTP_SERVER || 'ftp.sarkarijobalerts.com' }}
-        username: ${{ secrets.HOSTINGER_FTP_USERNAME || secrets.FTP_USERNAME || 'u340027669' }}
-        password: ${{ secrets.HOSTINGER_FTP_PASSWORD || secrets.FTP_PASSWORD }}
-        local-dir: ./frontend/out/
-        server-dir: ${{ secrets.HOSTINGER_FTP_DIR || 'domains/sarkarijobalerts.com/public_html/' }}
-        dangerous-clean-slate: false
+      - name: 🚀 Deploy to Hostinger via FTPS
+        if: env.HOSTINGER_FTP_PASSWORD != '' || env.FTP_PASSWORD != ''
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER || secrets.FTP_SERVER || 'ftp.sarkarijobalerts.com' }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME || secrets.FTP_USERNAME || 'u340027669' }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD || secrets.FTP_PASSWORD }}
+          local-dir: ./frontend/out/
+          server-dir: ${{ secrets.HOSTINGER_FTP_DIR || 'domains/sarkarijobalerts.com/public_html/' }}
+          dangerous-clean-slate: false
