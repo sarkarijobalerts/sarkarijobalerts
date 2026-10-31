@@ -69,6 +69,10 @@ export async function sendFacebookPost(jobData) {
       results.pagePost = data;
     } else {
       console.error(`[Facebook Error] Page API returned error:`, data);
+      if (data?.error?.code === 190) {
+        console.error(`\n⚠️  [Facebook Token Alert] Your Facebook Page Access Token has expired or lacks the required page permissions (pages_manage_posts, pages_read_engagement).`);
+        console.error(`👉 Please generate a fresh never-expiring Page Access Token from Meta Graph API Explorer and update FACEBOOK_PAGE_ACCESS_TOKEN in backend/.env & GitHub Secrets.\n`);
+      }
     }
   } catch (error) {
     console.error(`[Facebook Exception] Failed to send Facebook Page message: ${error.message}`);
