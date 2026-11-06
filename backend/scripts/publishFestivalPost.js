@@ -13,6 +13,22 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID || '@sarkarijobalerts_live';
 
 /**
+ * Helper to fetch with automatic retries for transient network / DNS drops
+ */
+async function fetchWithRetry(url, options, retries = 4, delayMs = 3000) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fetch(url, options);
+    } catch (err) {
+      if (attempt === retries) throw err;
+      console.warn(`[Network Retry] Attempt ${attempt} failed (${err.message}). Retrying in ${delayMs / 1000}s...`);
+      await new Promise(r => setTimeout(r, delayMs));
+      delayMs *= 1.5;
+    }
+  }
+}
+
+/**
  * Send festive photo post to Facebook Page
  */
 export async function postFestivalToFacebook(campaign, imagePath) {
@@ -31,7 +47,7 @@ export async function postFestivalToFacebook(campaign, imagePath) {
     formData.append('caption', campaign.caption);
     formData.append('access_token', PAGE_ACCESS_TOKEN);
 
-    const response = await fetch(`https://graph.facebook.com/v19.0/${PAGE_ID}/photos`, {
+    const response = await fetchWithRetry(`https://graph.facebook.com/v19.0/${PAGE_ID}/photos`, {
       method: 'POST',
       body: formData,
     });
@@ -70,7 +86,7 @@ export async function postFestivalToTelegram(campaign, imagePath) {
     formData.append('caption', campaign.telegramCaption || campaign.caption);
     formData.append('parse_mode', 'HTML');
 
-    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+    const response = await fetchWithRetry(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
       method: 'POST',
       body: formData,
     });
@@ -157,3 +173,4 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       process.exit(1);
     });
 }
+
