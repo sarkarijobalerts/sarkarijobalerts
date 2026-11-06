@@ -1,0 +1,42 @@
+name: Daily Festival Broadcast (08:00 AM IST)
+
+on:
+  schedule:
+    # 08:00 AM IST (UTC+5:30) = 02:30 UTC
+    - cron: '30 2 6,7,8,10,11 11 *'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+
+jobs:
+  broadcast-festival-post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: 🔑 Configure Environment Secrets
+        run: |
+          cat << 'EOF' > backend/.env
+          PORT=5000
+          NODE_ENV=production
+          TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID=${{ secrets.TELEGRAM_CHANNEL_ID }}
+          FACEBOOK_PAGE_ID=${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_ACCESS_TOKEN=${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          EOF
+
+      - name: 🪔 Publish Festival Post to Facebook & Telegram
+        run: |
+          cd backend
+          node scripts/publishFestivalPost.js today
