@@ -66,6 +66,7 @@ export function sanitizeTableCell(text, maxLen = 120) {
 async function getBrowserInstance() {
   console.log('[PHASE A: PUPPETEER LAUNCH] Launching chromium in stealth mode...');
   const possiblePaths = [
+    process.env.PUPPETEER_EXECUTABLE_PATH,
     process.env.CHROME_PATH,
     'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
@@ -87,6 +88,8 @@ async function getBrowserInstance() {
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
       '--disable-blink-features=AutomationControlled',
       '--window-size=1920,1080',
     ],

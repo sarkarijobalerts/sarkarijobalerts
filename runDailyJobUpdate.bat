@@ -11,7 +11,11 @@ echo ============================================================ >> "%LOG_FILE%
 echo 🚀 SARKARI JOB ALERTS DAILY UPDATE: %date% %time% >> "%LOG_FILE%" 2>&1
 echo ============================================================ >> "%LOG_FILE%" 2>&1
 
-echo [1/3] Scraping fresh jobs, AI processing, and Indexing... >> "%LOG_FILE%" 2>&1
+echo [0/4] Syncing latest updates from GitHub... >> "%LOG_FILE%" 2>&1
+cd /d "%ROOT_DIR%"
+call git pull origin main >> "%LOG_FILE%" 2>&1
+
+echo [1/4] Scraping fresh jobs, AI processing, and Indexing... >> "%LOG_FILE%" 2>&1
 cd /d "%ROOT_DIR%\backend"
 call node scripts/manualFullUpdate.js >> "%LOG_FILE%" 2>&1
 if %errorlevel% neq 0 (
@@ -19,7 +23,7 @@ if %errorlevel% neq 0 (
     exit /b %errorlevel%
 )
 
-echo [2/3] Building static Next.js export and sitemap.xml... >> "%LOG_FILE%" 2>&1
+echo [2/4] Building static Next.js export and sitemap.xml... >> "%LOG_FILE%" 2>&1
 cd /d "%ROOT_DIR%\frontend"
 call npm run build >> "%LOG_FILE%" 2>&1
 if %errorlevel% neq 0 (
@@ -27,13 +31,19 @@ if %errorlevel% neq 0 (
     exit /b %errorlevel%
 )
 
-echo [3/3] Deploying to Hostinger and purging cache... >> "%LOG_FILE%" 2>&1
+echo [3/4] Deploying to Hostinger and purging cache... >> "%LOG_FILE%" 2>&1
 cd /d "%ROOT_DIR%\backend"
 call node scripts/deployHostingerViaMcp.js >> "%LOG_FILE%" 2>&1
 if %errorlevel% neq 0 (
     echo ❌ Hostinger deployment failed with error code %errorlevel% >> "%LOG_FILE%" 2>&1
     exit /b %errorlevel%
 )
+
+echo [4/4] Syncing local changes to GitHub repository... >> "%LOG_FILE%" 2>&1
+cd /d "%ROOT_DIR%"
+call git add frontend/lib/seedPosts.json frontend/public/sitemap.xml >> "%LOG_FILE%" 2>&1
+call git commit -m "Auto-update job posts (local sync) [skip ci]" >> "%LOG_FILE%" 2>&1
+call git push origin main >> "%LOG_FILE%" 2>&1
 
 echo ============================================================ >> "%LOG_FILE%" 2>&1
 echo ✅ DAILY UPDATE COMPLETED SUCCESSFULLY: %date% %time% >> "%LOG_FILE%" 2>&1

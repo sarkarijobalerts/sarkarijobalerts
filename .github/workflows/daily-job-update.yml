@@ -6,6 +6,11 @@ on:
     - cron: '30 4 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub Actions tab
 
+# Prevent overlapping runs
+concurrency:
+  group: daily-job-alerts-update
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -36,6 +41,11 @@ jobs:
         run: |
           cd backend
           npm install
+
+      - name: 🌐 Install Headless Chromium for Puppeteer
+        run: |
+          cd backend
+          npx puppeteer browsers install chrome
 
       - name: 📦 Install Frontend Dependencies
         run: |
@@ -87,7 +97,8 @@ jobs:
             echo "No changes found to commit. Skipping commit."
           else
             git commit -m "Auto-update job posts & sitemap $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
 
       - name: 🔍 Check Hostinger Deployment Credentials
