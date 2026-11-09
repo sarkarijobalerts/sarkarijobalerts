@@ -79,6 +79,11 @@ export default function RootLayout({ children }) {
         <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLMs.txt" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="author" content="Rohit Sharma, SarkariJobAlerts Editorial Team" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1815409654667822"
+          crossOrigin="anonymous"
+        ></script>
         <Script
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="C9BXfs/kiNaI3aLJ69SADg"
