@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FacebookIcon, FacebookGroupIcon, TelegramIcon } from './SocialLinks';
+import { FacebookIcon, TelegramIcon } from './SocialLinks';
 
 export default function Navbar() {
   return (
@@ -54,16 +54,6 @@ export default function Navbar() {
                 className="p-2 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-400 hover:text-white hover:bg-blue-600 hover:border-blue-500 hover:scale-110 transition-all shadow-sm flex items-center justify-center"
               >
                 <FacebookIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.facebook.com/groups/sarkarijobalertscom"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Join Facebook Group"
-                aria-label="Facebook Group"
-                className="p-2 rounded-xl bg-indigo-600/15 border border-indigo-500/30 text-indigo-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 hover:scale-110 transition-all shadow-sm flex items-center justify-center"
-              >
-                <FacebookGroupIcon className="w-4 h-4" />
               </a>
               <a
                 href="https://t.me/sarkarijobalerts_live"

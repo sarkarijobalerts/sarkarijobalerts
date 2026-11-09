@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ShieldCheck, Mail, Globe, ExternalLink, Award, Sparkles } from 'lucide-react';
-import { FacebookIcon, FacebookGroupIcon, TelegramIcon } from './SocialLinks';
+import { FacebookIcon, TelegramIcon } from './SocialLinks';
 
 export default function Footer() {
   return (
@@ -42,15 +42,6 @@ export default function Footer() {
                 >
                   <FacebookIcon className="w-3.5 h-3.5 text-blue-500 group-hover:scale-110 transition-transform" />
                   <span>FB Page</span>
-                </a>
-                <a
-                  href="https://www.facebook.com/groups/sarkarijobalertscom"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 bg-slate-900 border border-slate-800 hover:border-indigo-500/60 hover:bg-indigo-950/40 text-slate-300 hover:text-indigo-400 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all group"
-                >
-                  <FacebookGroupIcon className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
-                  <span>FB Group</span>
                 </a>
                 <a
                   href="https://t.me/sarkarijobalerts_live"

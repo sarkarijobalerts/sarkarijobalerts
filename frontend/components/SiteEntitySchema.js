@@ -30,7 +30,6 @@ export default function SiteEntitySchema() {
         ],
         sameAs: [
           'https://www.facebook.com/SarkariJobAlertsCom/',
-          'https://www.facebook.com/groups/sarkarijobalertscom',
           'https://t.me/sarkarijobalerts_live',
           'https://x.com/SarkariJobAlert',
           'https://www.linkedin.com/company/sarkarijobalerts',

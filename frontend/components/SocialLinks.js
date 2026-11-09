@@ -33,13 +33,6 @@ export const SOCIAL_LINKS = [
     badgeColor: 'bg-blue-600/20 text-blue-400 border-blue-500/40 hover:bg-blue-600/30',
   },
   {
-    name: 'Facebook Group',
-    url: 'https://www.facebook.com/groups/sarkarijobalertscom',
-    icon: FacebookGroupIcon,
-    hoverColor: 'hover:text-indigo-400 hover:border-indigo-400/50 hover:bg-indigo-950/40',
-    badgeColor: 'bg-indigo-600/20 text-indigo-400 border-indigo-500/40 hover:bg-indigo-600/30',
-  },
-  {
     name: 'Telegram Channel',
     url: 'https://t.me/sarkarijobalerts_live',
     icon: TelegramIcon,
