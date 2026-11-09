@@ -56,7 +56,14 @@ export default function DisclaimerPage() {
         </div>
 
         <div className="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
-          <div className="bg-amber-950/40 border-l-4 border-amber-500 p-4 rounded-r-xl text-amber-200 text-sm leading-relaxed">
+          <div className="bg-amber-950/50 border-l-4 border-amber-500 p-5 rounded-r-2xl text-amber-100 text-sm sm:text-base leading-relaxed shadow-lg">
+            <strong className="block text-amber-300 font-extrabold uppercase tracking-wide text-xs mb-1">
+              Official Non-Affiliation Declaration:
+            </strong>
+            &ldquo;SarkariJobAlerts.com is an independent informational portal and is not affiliated with the Government of India or any state government. All information is gathered from public sources for educational purposes.&rdquo;
+          </div>
+
+          <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-xl text-slate-300 text-xs sm:text-sm leading-relaxed">
             <strong>CRITICAL STATEMENT:</strong> SarkariJobAlerts.com is a private news, informational, and educational blog. We are NOT associated, affiliated, endorsed by, or in any way officially connected with the Government of India, any State Government, or any official recruitment agency (such as SSC, UPSC, RRB, IBPS, NTA, or State PSCs).
           </div>
 

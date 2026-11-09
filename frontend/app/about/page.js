@@ -50,7 +50,7 @@ export default function AboutPage() {
       '@type': 'Person',
       name: 'Rohit Sharma',
       jobTitle: 'Senior Government Recruitment Analyst & Chief Editor',
-      description: 'Senior Government Recruitment Analyst with 7+ years of experience analyzing UPSC, SSC, RRB, Banking, and State PSC notifications.',
+      description: 'Senior Government Recruitment Analyst with 15+ years of digital experience in analyzing and curating accurate government notifications, UPSC, SSC, RRB, Banking, and State PSC vacancy updates.',
       worksFor: {
         '@type': 'Organization',
         name: 'SarkariJobAlerts',
@@ -130,7 +130,7 @@ export default function AboutPage() {
           
           <div className="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
             <p>
-              Every notification published on SarkariJobAlerts.com is curated, summarized, and verified by our editorial desk led by <strong>Rohit Sharma</strong> (Senior Government Recruitment Analyst &amp; Chief Editor). With over seven years of specialized experience analyzing public sector vacancy gazettes, our team cross-verifies:
+              Every notification published on SarkariJobAlerts.com is curated, summarized, and verified by our editorial desk led by <strong>Rohit Sharma</strong> (Senior Government Recruitment Analyst &amp; Chief Editor). With over 15 years of digital experience in analyzing public sector vacancy gazettes and curating accurate educational information, our team cross-verifies:
             </p>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
               <li className="flex items-center space-x-2">

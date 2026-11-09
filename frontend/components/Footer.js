@@ -163,12 +163,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/terms-and-conditions/" className="hover:text-emerald-400 transition-colors flex items-center space-x-1.5 font-medium">
-                  <span>› Terms & Conditions</span>
+                  <span>› Terms and Conditions</span>
                 </Link>
               </li>
               <li>
                 <Link href="/disclaimer/" className="hover:text-emerald-400 transition-colors flex items-center space-x-1.5 font-medium">
-                  <span>› Non-Govt Disclaimer</span>
+                  <span>› Disclaimer</span>
                 </Link>
               </li>
               <li>
@@ -188,11 +188,11 @@ export default function Footer() {
 
         {/* Disclaimer & Copyright */}
         <div className="pt-8 text-center space-y-3">
-          <p className="text-[11px] text-slate-500 max-w-4xl mx-auto leading-relaxed">
-            <strong>Non-Government Affiliation Disclaimer:</strong> SarkariJobAlerts.com is a private news, informational, and educational portal. We are NOT associated, affiliated, or authorized by the Government of India, any State Government, or any official recruitment board. All official notifications, dates, and links provided here are compiled from public domains for informational purposes only. Candidates are requested to double check details on official government websites.
+          <p className="text-[11px] text-slate-400 max-w-4xl mx-auto leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800/80">
+            <strong className="text-amber-400">Non-Government Affiliation Disclaimer:</strong> SarkariJobAlerts.com is an independent informational portal and is not affiliated with the Government of India or any state government. All information is gathered from public sources for educational purposes. Candidates are strongly advised to verify all recruitment details on official government websites before applying.
           </p>
           <div className="text-xs text-slate-400 pt-2 font-medium">
-            © 2026 <span className="text-slate-200">SarkariJobAlerts.com</span>. All Rights Reserved. Website Designed & Developed by{' '}
+            © 2026 <span className="text-slate-200 font-semibold">SarkariJobAlerts.com</span>. All Rights Reserved. Editorial lead by <Link href="/about/" className="text-cyan-400 font-semibold hover:underline">Rohit Sharma</Link> (Senior Recruitment Analyst). Website Designed &amp; Developed by{' '}
             <a
               href="https://zestrank.com/"
               target="_blank"

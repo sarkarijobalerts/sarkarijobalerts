@@ -12,7 +12,7 @@ export default function OneSignalInit() {
         appId: appId,
         allowLocalhostAsSecureOrigin: true,
         notifyButton: {
-          enable: true,
+          enable: false, // Disabled intrusive prompt widget for AdSense compliance
         },
         serviceWorkerParam: {
           scope: '/',
