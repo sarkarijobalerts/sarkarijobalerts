@@ -39,28 +39,35 @@ export async function sendTelegramMessage(jobData) {
     disable_web_page_preview: false,
   };
 
-  try {
-    console.log(`[Telegram Service] Posting to channel ${chatId}: "${safeTitle}"...`);
+  const maxAttempts = 3;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      console.log(`[Telegram Service] Posting to channel ${chatId} (attempt ${attempt}/${maxAttempts}): "${safeTitle}"...`);
 
-    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(15000),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok && data.ok) {
-      console.log(`[Telegram Service] Message successfully posted to Telegram! Message ID: ${data.result?.message_id}`);
-      return data;
-    } else {
-      console.error(`[Telegram Error] API returned error:`, data);
-      return null;
+      if (response.ok && data.ok) {
+        console.log(`[Telegram Service] Message successfully posted to Telegram! Message ID: ${data.result?.message_id}`);
+        return data;
+      } else {
+        console.error(`[Telegram Error] API returned error:`, data);
+        return null;
+      }
+    } catch (error) {
+      console.error(`[Telegram Exception] Attempt ${attempt}/${maxAttempts} failed: ${error.message}`);
+      if (attempt < maxAttempts) {
+        await new Promise((res) => setTimeout(res, 2000 * attempt));
+      }
     }
-  } catch (error) {
-    console.error(`[Telegram Exception] Failed to send Telegram message: ${error.message}`);
-    return null;
   }
+  return null;
 }

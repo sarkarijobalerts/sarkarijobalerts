@@ -140,9 +140,12 @@ async function runManualFullUpdate() {
         };
 
         newScrapedPosts.push(postRecord);
+        existingPosts.unshift(postRecord);
         existingSlugs.add(slug);
         existingUrls.add(rawData.sourceUrl);
-        console.log(`   ✅ Successfully processed & appended post: "${postRecord.rewrittenTitle}"`);
+        // Save incrementally after each post so progress is never lost on interruption
+        fs.writeFileSync(seedPath, JSON.stringify(existingPosts, null, 2), 'utf8');
+        console.log(`   ✅ Successfully processed & saved post: "${postRecord.rewrittenTitle}" (Total: ${existingPosts.length})`);
         
         // Push the new URL to Google Indexing API & IndexNow
         const newPostUrl = `https://sarkarijobalerts.com/job/${slug}/`;
@@ -152,9 +155,17 @@ async function runManualFullUpdate() {
         await pushUrlsToIndexNow(newPostUrl);
 
         // Trigger Social Media Posts
-        console.log(`   📱 Pushing to Social Media Channels...`);
-        await sendTelegramMessage(postRecord).catch(err => console.error(`   ❌ [Telegram] ${err.message}`));
-        await sendFacebookPost(postRecord).catch(err => console.error(`   ❌ [Facebook] ${err.message}`));
+        const skipTelegram = process.argv.includes('--skip-telegram');
+        const skipFacebook = process.argv.includes('--skip-facebook');
+        if (!skipTelegram || !skipFacebook) {
+          console.log(`   📱 Pushing to Social Media Channels...`);
+          if (!skipTelegram) {
+            await sendTelegramMessage(postRecord).catch(err => console.error(`   ❌ [Telegram] ${err.message}`));
+          }
+          if (!skipFacebook) {
+            await sendFacebookPost(postRecord).catch(err => console.error(`   ❌ [Facebook] ${err.message}`));
+          }
+        }
       }
     } catch (catErr) {
       console.error(`❌ Error processing portal ${portal.name}: ${catErr.message}`);
@@ -165,12 +176,9 @@ async function runManualFullUpdate() {
   console.log(`📊 SCRAPING SUMMARY: ${newScrapedPosts.length} new posts generated.`);
   console.log(`================================================================\n`);
 
-  // Merge new posts at top of seedPosts array
-  const updatedSeedPosts = [...newScrapedPosts, ...existingPosts];
-  fs.writeFileSync(seedPath, JSON.stringify(updatedSeedPosts, null, 2), 'utf8');
-  console.log(`💾 Updated seedPosts.json written! Total posts in dataset: ${updatedSeedPosts.length}`);
+  console.log(`💾 seedPosts.json finalized! Total posts in dataset: ${existingPosts.length}`);
 
-  return { newPostsCount: newScrapedPosts.length, totalPosts: updatedSeedPosts.length };
+  return { newPostsCount: newScrapedPosts.length, totalPosts: existingPosts.length };
 }
 
 runManualFullUpdate()

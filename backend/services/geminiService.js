@@ -126,39 +126,47 @@ export async function processScrapedDataWithGemini(rawScrapedText) {
 
   const inputContent = typeof rawScrapedText === 'object' ? JSON.stringify(rawScrapedText) : rawScrapedText;
 
-  try {
-    const generatePromise = ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: `Process this raw scraped job notification for sarkarijobalerts.com:\n\n${inputContent}` }],
+  const maxAttempts = 2;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const generatePromise = ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: `Process this raw scraped job notification for sarkarijobalerts.com:\n\n${inputContent}` }],
+          },
+        ],
+        config: {
+          systemInstruction: systemPrompt,
+          responseMimeType: 'application/json',
+          responseSchema: jobPostResponseSchema,
+          temperature: 0.2,
         },
-      ],
-      config: {
-        systemInstruction: systemPrompt,
-        responseMimeType: 'application/json',
-        responseSchema: jobPostResponseSchema,
-        temperature: 0.2,
-      },
-    });
+      });
 
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Gemini API timeout (35s exceeded)')), 35000)
-    );
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Gemini API timeout (50s exceeded)')), 50000)
+      );
 
-    const response = await Promise.race([generatePromise, timeoutPromise]);
-    const structuredData = JSON.parse(response.text);
+      const response = await Promise.race([generatePromise, timeoutPromise]);
+      const structuredData = JSON.parse(response.text);
 
-    // Sanitize slug
-    if (structuredData?.seo?.slug) {
-      structuredData.seo.slug = slugify(structuredData.seo.slug, { lower: true, strict: true });
+      // Sanitize slug
+      if (structuredData?.seo?.slug) {
+        structuredData.seo.slug = slugify(structuredData.seo.slug, { lower: true, strict: true });
+      }
+
+      return structuredData;
+    } catch (error) {
+      console.error(`[Gemini API Error] Attempt ${attempt}/${maxAttempts} failed:`, error.message);
+      if (attempt < maxAttempts) {
+        console.log('[Gemini AI] Retrying in 3 seconds...');
+        await new Promise((res) => setTimeout(res, 3000));
+      } else {
+        return generateFallbackStructuredData(rawScrapedText);
+      }
     }
-
-    return structuredData;
-  } catch (error) {
-    console.error('[Gemini API Error] Failed to generate structured content:', error.message);
-    return generateFallbackStructuredData(rawScrapedText);
   }
 }
 
