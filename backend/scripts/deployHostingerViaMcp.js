@@ -1,39 +1,27 @@
-import { spawn, execSync } from 'child_process';
+import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(__dirname, '../../frontend/out');
-const archivePath = path.resolve(__dirname, '../../frontend/out.tar.gz');
 
 export async function deployToHostinger() {
   console.log('🚀 Initiating Hostinger deployment for sarkarijobalerts.com...');
   console.log('Target directory:', outDir);
 
-  // Create compressed archive for fast, reliable upload
-  let deployTarget = outDir;
-  try {
-    if (fs.existsSync(archivePath)) fs.unlinkSync(archivePath);
-    execSync(`tar -czf "${archivePath}" -C "${outDir}" .`, { stdio: 'inherit' });
-    if (fs.existsSync(archivePath)) {
-      deployTarget = archivePath;
-      console.log('Created archive for upload:', archivePath);
-    }
-  } catch (tarErr) {
-    console.warn('Archive creation skipped, falling back to directory upload:', tarErr.message);
+  if (!fs.existsSync(outDir)) {
+    throw new Error(`Build output directory does not exist: ${outDir}`);
   }
-
-  const cleanup = () => {
-    try {
-      if (fs.existsSync(archivePath)) fs.unlinkSync(archivePath);
-    } catch {}
-  };
 
   return new Promise((resolve, reject) => {
     const mcpProcess = spawn('npx.cmd', ['--package=@hostinger/mcp@latest', 'hostinger-hosting-mcp'], {
       stdio: ['pipe', 'pipe', 'pipe'],
       shell: true,
+      env: {
+        ...process.env,
+        USER_AGENT: 'extension;antigravity;1.4.7',
+      },
     });
 
     let buffer = '';
@@ -56,7 +44,7 @@ export async function deployToHostinger() {
             // Send standard MCP initialized notification
             mcpProcess.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n');
 
-            // Send tools/call for hosting_deploy
+            // Send tools/call for hosting_deploy with the directory directly
             const deployReq = {
               jsonrpc: '2.0',
               id: 2,
@@ -67,7 +55,7 @@ export async function deployToHostinger() {
                   operation: 'hosting_deploy',
                   params: {
                     domain: 'sarkarijobalerts.com',
-                    path: deployTarget,
+                    path: outDir,
                     type: 'static',
                   },
                 },
@@ -78,12 +66,11 @@ export async function deployToHostinger() {
             console.log('Deploy Result:', JSON.stringify(msg.result || msg.error));
             if (msg.error || msg.result?.isError) {
               hasError = true;
-              cleanup();
               mcpProcess.stdin.end();
               return reject(new Error(`Hostinger deploy failed: ${JSON.stringify(msg.result || msg.error)}`));
             }
 
-            // Send tools/call to clear cache using updated operation name
+            // Send tools/call to clear cache using hosting_cache_clear
             const cacheReq = {
               jsonrpc: '2.0',
               id: 3,
@@ -102,7 +89,6 @@ export async function deployToHostinger() {
             mcpProcess.stdin.write(JSON.stringify(cacheReq) + '\n');
           } else if (msg.id === 3) {
             console.log('Cache Clear Result:', JSON.stringify(msg.result || msg.error));
-            cleanup();
             mcpProcess.stdin.end();
             resolve({ success: true });
           }
@@ -117,12 +103,10 @@ export async function deployToHostinger() {
     });
 
     mcpProcess.on('error', (err) => {
-      cleanup();
       reject(err);
     });
 
     mcpProcess.on('close', (code) => {
-      cleanup();
       if (hasError) return;
       if (code !== 0 && !initialized) {
         reject(new Error(`MCP Process exited with code ${code}`));
