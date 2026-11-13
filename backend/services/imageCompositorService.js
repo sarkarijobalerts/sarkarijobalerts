@@ -117,14 +117,14 @@ export async function renderFestivalPoster({
       background-repeat: no-repeat;
     }
 
-    /* Ultra-soft ambient warm tint at the top to ensure crisp typography */
+    /* Soft ambient daylight wash at the top to ensure razor-sharp typography contrast */
     .top-light-gradient {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 240px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.25) 55%, rgba(255, 255, 255, 0) 100%);
+      height: 280px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.68) 55%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0) 100%);
       pointer-events: none;
       z-index: 2;
     }
@@ -159,7 +159,7 @@ export async function renderFestivalPoster({
       font-size: 24px;
       font-weight: 900;
       letter-spacing: 0.6px;
-      color: #0F2C59;
+      color: #0B2545;
       line-height: 1.1;
       text-transform: uppercase;
     }
@@ -173,10 +173,10 @@ export async function renderFestivalPoster({
       text-transform: capitalize;
     }
 
-    /* Top-Center Festival Greeting Headline */
+    /* Top-Center Festival Greeting Headline - Crisp Brand Navy with luminous backing */
     .festival-title-wrap {
       position: absolute;
-      top: 150px;
+      top: 140px;
       left: 0;
       width: 100%;
       text-align: center;
@@ -186,12 +186,12 @@ export async function renderFestivalPoster({
 
     .festival-title {
       font-family: 'Playfair Display', serif;
-      font-size: 80px;
-      font-weight: 700;
-      color: #D67425;
+      font-size: 82px;
+      font-weight: 800;
+      color: #0B2545;
       line-height: 1.1;
       letter-spacing: 0.5px;
-      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(0, 0, 0, 0.12);
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.95), 0 2px 8px rgba(255, 255, 255, 0.9);
     }
 
     /* Bottom Navy Blue Banner (height 260px) */

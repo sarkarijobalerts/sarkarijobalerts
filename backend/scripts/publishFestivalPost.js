@@ -8,8 +8,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const PAGE_ID = process.env.FACEBOOK_PAGE_ID || '1204392889428589';
-const PAGE_ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN || 'EAANl1K0Lb5gBS6ckV2WVyMQwWOKOUvwCaBWartT6nWAGxGDfoQZCpEuUfH5ZAHjmoTIuRMwSnK39VRQZAOK0hbByC7J6AtofmrC7KGmZB0V08KqNgoJe69UwY0p65J0ZBlj0GU3rV2mIdRsSHvAgyG9wRNbhgG4scb5HdlNv9gmPohF44PwybLZAZBPNAGHZBBpUVEMZCPRVkkZAoGtNkvCgnnFgZDZD';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8897742173:AAFpAVhQl5A-us57x30rpOWVTQIRWT9_4ow';
 const TELEGRAM_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID || '@sarkarijobalerts_live';
 
 /**
@@ -40,6 +40,18 @@ export async function postFestivalToFacebook(campaign, imagePath) {
   console.log(`[Facebook Campaign] Publishing "${campaign.name}" to Page ${PAGE_ID}...`);
 
   try {
+    // Check if post is already scheduled on Meta servers
+    try {
+      const scheduledRes = await fetchWithRetry(`https://graph.facebook.com/v19.0/${PAGE_ID}/scheduled_posts?access_token=${PAGE_ACCESS_TOKEN}`);
+      const scheduledData = await scheduledRes.json();
+      if (scheduledData?.data?.length > 0) {
+        console.log(`ℹ️ [Facebook Info] Post for "${campaign.name}" is already scheduled natively on Meta servers. Meta will publish it automatically without duplicates.`);
+        return { status: 'already_scheduled_on_meta' };
+      }
+    } catch (checkErr) {
+      // Proceed to direct upload if scheduled_posts check fails
+    }
+
     const fileBuffer = fs.readFileSync(imagePath);
     const blob = new Blob([fileBuffer], { type: 'image/png' });
     const formData = new FormData();
