@@ -1,9 +1,9 @@
-name: Daily Festival Broadcast (08:00 AM IST)
+name: Daily Festival Broadcast (09:00 AM IST)
 
 on:
   schedule:
-    # 08:00 AM IST (UTC+5:30) = 02:30 UTC
-    - cron: '30 2 6,7,8,10,11 11 *'
+    # 09:00 AM IST (UTC+5:30) = 03:30 UTC on Nov 14 (Children's Day) and Nov 15 (Chhath Puja)
+    - cron: '30 3 14,15 11 *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
 
 jobs:

@@ -11,7 +11,7 @@ console.log('================================================================\n'
 
 // 1. Verify all posters exist on startup
 generateAllCompositePosters().then(() => {
-  console.log('✅ All 5 festive posters verified & ready in memory/disk.\n');
+  console.log('✅ All festival posters verified & ready in memory/disk.\n');
   registerScheduledJobs();
 }).catch(err => {
   console.error('⚠️ Warning during startup poster verification:', err.message);
@@ -19,18 +19,17 @@ generateAllCompositePosters().then(() => {
 });
 
 function registerScheduledJobs() {
-  console.log('📅 Registering Festival Matrix (All triggers fire at 08:00 AM IST):\n');
+  console.log('📅 Registering Festival Matrix:\n');
 
   FESTIVAL_CAMPAIGNS.forEach((campaign) => {
-    // Schedule format: '0 8 DD 11 *'
     const cronExpression = campaign.cronSchedule;
 
-    console.log(`⏰ [Schedule Queued] ${campaign.date} @ 08:00 AM IST -> "${campaign.name}" (${cronExpression})`);
+    console.log(`⏰ [Schedule Queued] ${campaign.date} -> "${campaign.name}" (${cronExpression})`);
 
     cron.schedule(
       cronExpression,
       async () => {
-        console.log(`\n🔔 [ALARM FIRED] It is 08:00 AM IST on ${campaign.date}! Initiating broadcast for ${campaign.name}...`);
+        console.log(`\n🔔 [ALARM FIRED] Triggering scheduled broadcast for ${campaign.name} on ${campaign.date}...`);
         try {
           await executeFestivalBroadcast(campaign.id);
         } catch (error) {
@@ -44,7 +43,7 @@ function registerScheduledJobs() {
     );
   });
 
-  console.log('\n🟢 All 5 festive campaigns are locked and loaded. Waiting for trigger times...');
+  console.log('\n🟢 All festival campaigns are locked and loaded. Waiting for trigger times...');
 }
 
 // Keep daemon alive

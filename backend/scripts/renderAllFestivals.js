@@ -74,11 +74,24 @@ export const FESTIVAL_CAMPAIGNS = [
     keywords: ['Bhai Dooj', 'brother sister bond', 'festival greetings', 'job notifications', 'festive celebration'],
   },
   {
+    id: 'childrens_day',
+    name: "Happy Children's Day",
+    subWish: 'Wishing Every Child a Future Full of Dreams, Smiles and Success!',
+    date: '2026-11-14',
+    cronSchedule: '0 9 14 11 *', // 09:00 AM on Nov 14
+    baseImageName: 'childrens_day.jpg',
+    outputImageName: 'childrens_day_festive_1080x1080.png',
+    caption: `Happy Children's Day! 🎈✨ Children are the budding stars and future architects of our nation. May their innocence, boundless curiosity, and dreams always be protected and nurtured. Wishing all students, young dreamers, and future civil servants a joyful Children's Day from the SarkariJobAlerts team! 🌟📚\n\n🌐 Build your future career with: https://sarkarijobalerts.com\n\n#ChildrensDay #HappyChildrensDay #ChildrensDay2026 #BalDiwas #FutureLeaders #SarkariJobAlerts`,
+    telegramCaption: `🎈 <b>HAPPY CHILDREN'S DAY 2026 (BAL DIWAS)</b> 🎈\n\nChildren are the sparkling stars and future leaders of tomorrow! May their innocence, relentless curiosity, and grand dreams always shine bright. 🌟📚\n\nWishing all aspirants, young dreamers, and future officers a joyful and inspiring Children's Day from the SarkariJobAlerts family! Keep dreaming big, working hard, and achieving greatness.\n\n🌐 <b>Explore latest government careers:</b> https://sarkarijobalerts.com\n\n#ChildrensDay #HappyChildrensDay #BalDiwas #SarkariJobAlerts`,
+    hashtags: ['#ChildrensDay', '#HappyChildrensDay', '#ChildrensDay2026', '#BalDiwas', '#SarkariJobAlerts'],
+    keywords: ['Childrens Day', 'Bal Diwas', 'happy children', 'future leaders', 'education'],
+  },
+  {
     id: 'chhath_puja',
     name: 'Happy Chhath Puja',
     subWish: 'Wishing you health, peace and happiness',
-    date: '2026-11-14',
-    cronSchedule: '0 6 14 11 *', // 06:00 AM on Nov 14
+    date: '2026-11-15',
+    cronSchedule: '0 9 15 11 *', // 09:00 AM on Nov 15
     baseImageName: 'chhath_puja.jpg',
     outputImageName: 'chhath_puja_festive_1080x1080.png',
     caption: `Warm greetings on the auspicious occasion of Chhath Puja! 🌅 May the Sun God (Surya Dev) and Chhathi Maiya bless you and your family with radiant health, peace, prosperity, and grand success in all your endeavours. 🙏✨\n\n🌐 Stay updated with the latest government job opportunities: https://sarkarijobalerts.com\n\n#ChhathPuja #ChhathPuja2026 #HappyChhathPuja #ChhathiMaiya #SuryaDev #SarkariJobAlerts`,
