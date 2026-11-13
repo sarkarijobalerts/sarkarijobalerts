@@ -73,6 +73,19 @@ export const FESTIVAL_CAMPAIGNS = [
     hashtags: ['#BhaiDooj', '#BhaiDooj2026', '#SiblingLove', '#FestiveVibes', '#SarkariJobAlerts'],
     keywords: ['Bhai Dooj', 'brother sister bond', 'festival greetings', 'job notifications', 'festive celebration'],
   },
+  {
+    id: 'chhath_puja',
+    name: 'Happy Chhath Puja',
+    subWish: 'Wishing you health, peace and happiness',
+    date: '2026-11-14',
+    cronSchedule: '0 6 14 11 *', // 06:00 AM on Nov 14
+    baseImageName: 'chhath_puja.jpg',
+    outputImageName: 'chhath_puja_festive_1080x1080.png',
+    caption: `Warm greetings on the auspicious occasion of Chhath Puja! 🌅 May the Sun God (Surya Dev) and Chhathi Maiya bless you and your family with radiant health, peace, prosperity, and grand success in all your endeavours. 🙏✨\n\n🌐 Stay updated with the latest government job opportunities: https://sarkarijobalerts.com\n\n#ChhathPuja #ChhathPuja2026 #HappyChhathPuja #ChhathiMaiya #SuryaDev #SarkariJobAlerts`,
+    telegramCaption: `🌅 <b>HAPPY CHHATH PUJA 2026</b> 🌅\n\nMay the divine rays of Surya Dev and the holy blessings of Chhathi Maiya illuminate your life with infinite joy, good health, peace, and glorious success in your career aspirations! 🙏🪔\n\nWarmest wishes to you and your family on this sacred Mahaparv from the SarkariJobAlerts team.\n\n🌐 <b>Explore latest government job alerts:</b> https://sarkarijobalerts.com\n\n#ChhathPuja #ChhathiMaiya #HappyChhathPuja #SarkariJobAlerts`,
+    hashtags: ['#ChhathPuja', '#ChhathPuja2026', '#HappyChhathPuja', '#ChhathiMaiya', '#SarkariJobAlerts'],
+    keywords: ['Chhath Puja', 'Chhathi Maiya', 'Surya Dev', 'festival greetings', 'career success'],
+  },
 ];
 
 /**
