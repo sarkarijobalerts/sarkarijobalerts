@@ -94,27 +94,29 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  let orgShort = cleanText(post.organizationShort || post.organizationName || post.organization || '', 18);
-  orgShort = orgShort.replace(/Commission|Recruitment|Board|Department|Corporation|Limited/gi, '').trim();
-
-  let jobShort = cleanText(post.postName || post.rewrittenTitle || post.title, 35);
-  let combined = jobShort;
-  if (orgShort && orgShort.length > 2 && !jobShort.toLowerCase().includes(orgShort.toLowerCase().slice(0, 4))) {
-    combined = `${orgShort} ${jobShort}`;
+  let rawTitle = cleanText(post.rewrittenTitle || post.title || post.postName, 60);
+  let finalTitle = `${rawTitle} | SarkariJobAlerts`;
+  if (finalTitle.length > 70) {
+    finalTitle = `${rawTitle.slice(0, 50).trim()}... | SarkariJobAlerts`;
   }
-  combined = cleanText(combined, 33);
-  if (!combined.includes('2026') && !combined.includes('2025')) {
-    combined = `${combined} 2026`;
-  }
-  const finalTitle = `${cleanText(combined, 38)} | SarkariJobAlerts`;
 
-  let description = cleanText(post.metaDescription || post.shortInfo, 155);
+  let description = cleanText(post.metaDescription || post.shortInfo, 160);
   if (!description || description.length < 50) {
-    const orgName = cleanText(post.organizationName || post.organization || 'Govt', 25);
-    description = `${cleanText(post.postName || post.title, 35)} recruitment 2026 notification by ${orgName}. Check eligibility criteria, age limit, and apply online.`;
+    const orgName = cleanText(post.organizationName || post.organization || 'Govt', 30);
+    if (post.category === 'Results') {
+      description = `Check ${rawTitle} results, cutoff marks, and merit list released by ${orgName}. Direct scorecard download link and verification guide.`;
+    } else if (post.category === 'Admit Cards') {
+      description = `Download ${rawTitle} admit card, exam city intimation slip, and hall ticket released by ${orgName}. Check exam dates and reporting instructions.`;
+    } else if (post.category === 'Answer Key') {
+      description = `Download ${rawTitle} official answer key and question paper solution by ${orgName}. Calculate raw marks and submit online objections.`;
+    } else if (post.category === 'Syllabus') {
+      description = `Download ${rawTitle} exam syllabus, pattern, and subject-wise marks distribution PDF released by ${orgName}. Preparation strategy and tips.`;
+    } else {
+      description = `${rawTitle} notification announced by ${orgName}. Check eligibility criteria, age limit, vacancies, and step-by-step apply online guide.`;
+    }
   }
-  if (description.length > 155) {
-    description = description.slice(0, 152).trim() + '...';
+  if (description.length > 160) {
+    description = description.slice(0, 157).trim() + '...';
   }
 
   const staticBannerUrl = 'https://sarkarijobalerts.com/sarkari-job.jpg';
@@ -246,7 +248,11 @@ export default async function JobDetailPage({ params }) {
             {org}
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-400 leading-tight">
-            {postTitle} Recruitment 2026 – Apply Online, Notification PDF
+            {post.category === 'Results' && `${postTitle} – Check Result, Merit List & Cutoff Marks`}
+            {post.category === 'Admit Cards' && `${postTitle} – Download Hall Ticket, Exam City Slip & Date`}
+            {post.category === 'Answer Key' && `${postTitle} – Download Answer Key & Question Paper Solution`}
+            {post.category === 'Syllabus' && `${postTitle} – Detailed Exam Pattern, Syllabus & Marking Scheme PDF`}
+            {(!post.category || post.category === 'Latest Jobs') && `${postTitle} Recruitment 2026 – Apply Online, Eligibility, Notification PDF`}
           </h1>
           <div className="pt-1">
             <span className="text-xs sm:text-sm font-extrabold text-cyan-400 tracking-widest uppercase bg-slate-900 border border-cyan-500/30 px-4 py-1 rounded-full inline-block shadow-inner">
@@ -287,23 +293,26 @@ export default async function JobDetailPage({ params }) {
         </div>
 
         {/* =========================================================================
-            SECTION 1: JOB OVERVIEW & EXPERT TAKE (150+ Words Original Analysis)
+            SECTION 1: OVERVIEW & EXPERT TAKE (150+ Words Original Analysis)
            ========================================================================= */}
         <section className="p-6 sm:p-8 bg-slate-900/50 border-b-2 border-slate-700 space-y-4">
           <h2 className="text-xl sm:text-2xl font-black text-cyan-400 tracking-wide flex items-center space-x-2">
             <Sparkles className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-            <span>Job Overview &amp; Expert Take</span>
+            <span>Overview &amp; Expert Analysis</span>
           </h2>
 
           <div className="prose prose-invert max-w-none text-sm sm:text-base text-slate-300 leading-relaxed space-y-3.5">
             <p>
-              The <strong>{org}</strong> has officially announced its 2026 recruitment notification for <strong>{roleName}</strong> across various regional and central departments, offering a total of <strong>{totalPostsText}</strong> vacancies. Based on previous recruitment cycles and examination cut-off trends, this recruitment drive is expected to be highly competitive, drawing thousands of government job aspirants nationwide. Candidates aiming to secure a permanent public sector career must adopt a disciplined, targeted preparation roadmap right from day one.
+              {cleanText(post.expertTake, 1500) || `The ${org} has announced critical updates for ${roleName}. Candidates must verify all details and prepare accordingly.`}
             </p>
-            <p>
-              {cleanText(post.shortInfo, 350) || `${org} has published this premier opportunity for aspiring graduates and specialists. Selected candidates will enjoy competitive pay scales under the 7th Central Pay Commission (CPC) or state matrix, complete with government medical perks, dearness allowances (DA), and robust job security.`}
-            </p>
-            <p>
-              <strong>Expert Career Advice:</strong> Aspirants are strongly encouraged not to postpone their online registration until the final closing date. Government recruitment portals frequently experience intense server congestion, payment gateway timeouts, or OTP delivery delays during the final 48 hours of submission. Furthermore, ensure that your scanned certificates, category affidavits, and identification documents conform strictly to the notification guidelines before initiating form entry.
+            {post.shortInfo && (
+              <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 text-xs sm:text-sm text-slate-300 space-y-1">
+                <strong className="text-cyan-400 block text-xs uppercase tracking-wider">Official Summary:</strong>
+                <p>{cleanText(post.shortInfo, 600)}</p>
+              </div>
+            )}
+            <p className="text-xs sm:text-sm text-amber-300/90 font-medium bg-amber-950/30 border border-amber-500/30 p-3.5 rounded-xl">
+              <strong>Advisory from Editorial Board:</strong> Aspirants are strongly encouraged to verify all dates and eligibility parameters directly from the official notification PDF. For online registrations or downloads, avoid peak traffic hours to prevent gateway timeouts.
             </p>
           </div>
         </section>
@@ -502,91 +511,83 @@ export default async function JobDetailPage({ params }) {
             </div>
           </div>
 
-          {/* Detailed Syllabus & Preparation Strategy (200+ Words Original Analysis) */}
-          <div className="bg-slate-950/90 border border-slate-800 rounded-2xl p-6 space-y-4">
-            <h3 className="text-base font-extrabold text-emerald-400 flex items-center space-x-2">
-              <BookOpen className="w-5 h-5 text-emerald-400" />
-              <span>Syllabus Breakdown &amp; Exam Strategy Insights</span>
-            </h3>
-
-            <div className="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
-              <p>
-                To crack the <strong>{postTitle}</strong> recruitment test, aspirants must master the following foundational pillars commonly prescribed in competitive public sector entrance examinations:
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
-                <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <strong className="text-cyan-400 text-xs uppercase tracking-wide block">1. General Intelligence &amp; Reasoning</strong>
-                  <p className="text-slate-400 text-xs">Analogies, syllogisms, number series, coding-decoding, blood relations, non-verbal matrices, and analytical deduction.</p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <strong className="text-emerald-400 text-xs uppercase tracking-wide block">2. Quantitative Aptitude &amp; Mathematics</strong>
-                  <p className="text-slate-400 text-xs">Arithmetic fundamentals, percentages, ratios, profit &amp; loss, simple/compound interest, time &amp; work, algebra, geometry, and data interpretation.</p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <strong className="text-amber-400 text-xs uppercase tracking-wide block">3. General Awareness &amp; Current Affairs</strong>
-                  <p className="text-slate-400 text-xs">Indian Constitution, Polity, History, Geography, National Budget, Economic Developments, Science &amp; Tech, and the last 6 months of national events.</p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <strong className="text-indigo-400 text-xs uppercase tracking-wide block">4. Language Proficiency &amp; Comprehension</strong>
-                  <p className="text-slate-400 text-xs">Grammar fundamentals, vocabulary, error spotting, sentence rearrangement, idioms/phrases, and reading comprehension passages.</p>
+          {/* Detailed Selection Process & Preparation Strategy */}
+          <div className="space-y-4 pt-2">
+            {post.selectionProcess && (
+              <div className="bg-slate-950/90 border border-slate-800 rounded-2xl p-6 space-y-3">
+                <h3 className="text-base font-extrabold text-cyan-400 flex items-center space-x-2">
+                  <GraduationCap className="w-5 h-5 text-cyan-400" />
+                  <span>
+                    {post.category === 'Results' && 'Selection Stages Completed & Upcoming Document Verification'}
+                    {post.category === 'Admit Cards' && 'Exam Scheme & Biometric Verification Protocol'}
+                    {post.category === 'Answer Key' && 'Evaluation & Objection Redressal Process'}
+                    {post.category === 'Syllabus' && 'Examination Stages & Qualifying Pattern'}
+                    {(!post.category || post.category === 'Latest Jobs') && 'Selection Process & Examination Stages'}
+                  </span>
+                </h3>
+                <div className="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2">
+                  <p>{cleanText(post.selectionProcess, 1500)}</p>
                 </div>
               </div>
+            )}
 
-              <p className="pt-2">
-                <strong>Preparation Recommendation:</strong> We advise students to dedicate at least 60% of their daily revision to solving previous year questions (PYQs) and full-length timed mock tests. Since negative marking (0.25 to 0.33 marks) is strictly applied in most CBT tiers, maintaining higher accuracy over blind guesswork is the single most decisive factor in securing a qualifying score in the final merit list.
-              </p>
-            </div>
+            {post.preparationStrategy && (
+              <div className="bg-slate-950/90 border border-slate-800 rounded-2xl p-6 space-y-3">
+                <h3 className="text-base font-extrabold text-emerald-400 flex items-center space-x-2">
+                  <BookOpen className="w-5 h-5 text-emerald-400" />
+                  <span>
+                    {post.category === 'Results' && 'Next Stage Action Plan & Verification Guidelines'}
+                    {post.category === 'Admit Cards' && 'Last-Minute Revision & Exam Day Guidelines'}
+                    {post.category === 'Answer Key' && 'Score Estimation & Cutoff Analysis Strategy'}
+                    {post.category === 'Syllabus' && 'Topic-Wise Syllabus Breakdown & Recommended Strategy'}
+                    {(!post.category || post.category === 'Latest Jobs') && 'Syllabus Breakdown & Preparation Strategy'}
+                  </span>
+                </h3>
+                <div className="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2">
+                  <p>{cleanText(post.preparationStrategy, 1500)}</p>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
         {/* =========================================================================
-            SECTION 4: STEP-BY-STEP GUIDE: HOW TO APPLY (150+ Words Ordered List)
+            SECTION 4: STEP-BY-STEP GUIDE (Category-Aware Ordered List)
            ========================================================================= */}
         <section className="p-6 sm:p-8 border-b-2 border-slate-700 bg-slate-950 space-y-4">
           <div className="text-center space-y-1">
             <h2 className="text-xl sm:text-2xl font-black text-emerald-400 uppercase tracking-wide flex items-center justify-center space-x-2">
               <ListOrdered className="w-6 h-6 text-emerald-400" />
-              <span>Step-by-Step Guide: How to Apply</span>
+              <span>
+                {post.category === 'Results' && 'Step-by-Step Guide: How to Check Result & Scorecard'}
+                {post.category === 'Admit Cards' && 'Step-by-Step Guide: How to Download Admit Card / Hall Ticket'}
+                {post.category === 'Answer Key' && 'Step-by-Step Guide: How to Download Answer Key & Challenge Questions'}
+                {post.category === 'Syllabus' && 'Step-by-Step Guide: How to Download Official Syllabus PDF'}
+                {(!post.category || post.category === 'Latest Jobs') && 'Step-by-Step Guide: How to Apply Online'}
+              </span>
             </h2>
             <p className="text-xs text-slate-400 max-w-2xl mx-auto">
-              Follow this verified step-by-step procedure to complete your online registration smoothly without errors.
+              Follow this verified step-by-step procedure to access official updates smoothly without errors.
             </p>
           </div>
 
           <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:p-7 space-y-4">
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Before clicking the official application link, candidates must ensure all prerequisites are satisfied to avoid rejection during Document Verification (DV):
-            </p>
-
             <ol className="list-decimal pl-5 space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed marker:text-emerald-400 marker:font-black">
-              <li>
-                <strong>Keep Prerequisite Documents Ready:</strong> Prepare a recent color passport-sized photograph (JPEG format, 20KB to 50KB with a light/white background) taken within the last three months, a clear signature scanned on plain white paper (10KB to 20KB), and self-attested PDF copies of your Matriculation (10th) certificate (for Date of Birth proof), educational marksheets, and category/EWS/PwD certificates.
-              </li>
-              <li>
-                <strong>Access the Official Portal:</strong> Click on the verified <em>&ldquo;Apply Online&rdquo;</em> link located in the important links table below to navigate to the official {org} recruitment server.
-              </li>
-              <li>
-                <strong>One-Time Registration (OTR):</strong> New applicants must click on <em>&ldquo;New User Registration / Register Now&rdquo;</em>, provide an active mobile number and personal email ID, verify OTPs, and generate their unique Registration Number and Login Password.
-              </li>
-              <li>
-                <strong>Complete Application Form Details:</strong> Log in using your registration credentials and enter your personal details, parentage, postal address, and educational qualifications exactly as recorded on your 10th standard certificate.
-              </li>
-              <li>
-                <strong>Upload Scanned Photographs &amp; Signatures:</strong> Upload your photo, signature, and required certificates adhering strictly to the prescribed pixel dimensions and file size limits specified in the official notification.
-              </li>
-              <li>
-                <strong>Thorough Preview &amp; Scrutiny:</strong> Before final submission, carefully review all filled columns via the <em>&ldquo;Application Preview&rdquo;</em> button. Verify that your name, date of birth, category, and exam center choices are 100% correct, as changes cannot be made once submitted.
-              </li>
-              <li>
-                <strong>Online Fee Payment:</strong> If applicable for your category, pay the prescribed application fee through the integrated payment gateway using Net Banking, Debit/Credit Card, or UPI. Save the payment transaction ID.
-              </li>
-              <li>
-                <strong>Final Printout:</strong> Download and print at least two physical copies of the completed application form and fee confirmation receipt for future reference during admit card issuance and physical document verification.
-              </li>
+              {Array.isArray(post.howToApply) && post.howToApply.length > 0 ? (
+                post.howToApply.map((step, idx) => (
+                  <li key={idx}>
+                    {cleanText(step, 400)}
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li><strong>Visit Official Website:</strong> Navigate to the official portal of {org} via the verified link below.</li>
+                  <li><strong>Open Notification:</strong> Click on the active link for &ldquo;{postTitle}&rdquo;.</li>
+                  <li><strong>Enter Credentials:</strong> Provide your registered credentials (Roll No / Registration ID &amp; Password / DOB).</li>
+                  <li><strong>Review &amp; Verify:</strong> Check all details carefully on your screen.</li>
+                  <li><strong>Download &amp; Print:</strong> Save a PDF copy and print physical copies for future official verification.</li>
+                </>
+              )}
             </ol>
           </div>
         </section>

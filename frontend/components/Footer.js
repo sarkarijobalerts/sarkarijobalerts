@@ -97,35 +97,35 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Top Categories */}
+          {/* Column 3: Aspirant Resources & E-E-A-T Trust */}
           <div>
             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-indigo-500 pl-2.5">
-              Top Categories
+              Editorial & Trust
             </h3>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <Link href="/latest-jobs/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
-                  <span>› SSC Recruitments (CGL / CHSL / GD)</span>
+                <Link href="/about/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
+                  <span>› Editorial Team & Standards</span>
                 </Link>
               </li>
               <li>
-                <Link href="/latest-jobs/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
-                  <span>› Railway Vacancies (RRB / RRC)</span>
+                <Link href="/disclaimer/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
+                  <span>› Non-Affiliation Declaration</span>
                 </Link>
               </li>
               <li>
-                <Link href="/latest-jobs/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
-                  <span>› Bank Jobs (IBPS / SBI / RBI)</span>
+                <Link href="/contact/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
+                  <span>› Editorial Desk & Corrections</span>
                 </Link>
               </li>
               <li>
-                <Link href="/latest-jobs/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
-                  <span>› Police Bharti (UP / Bihar / MP)</span>
+                <Link href="/terms-and-conditions/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
+                  <span>› Terms of Informational Use</span>
                 </Link>
               </li>
               <li>
-                <Link href="/latest-jobs/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
-                  <span>› UPSC & Civil Services Exams</span>
+                <Link href="/privacy-policy/" className="hover:text-indigo-400 transition-colors flex items-center space-x-1.5">
+                  <span>› Privacy & Cookie Policy</span>
                 </Link>
               </li>
             </ul>

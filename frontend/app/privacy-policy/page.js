@@ -67,7 +67,7 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-lg font-bold text-white mt-6">3. Google DoubleClick DART Cookie (Google AdSense)</h2>
           <p>
-            Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to www.website.com and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">https://policies.google.com/technologies/ads</a>.
+            Google is a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to sarkarijobalerts.com and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">https://policies.google.com/technologies/ads</a>.
           </p>
 
           <h2 className="text-lg font-bold text-white mt-6">4. Third Party Privacy Policies</h2>
