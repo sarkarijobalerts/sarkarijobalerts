@@ -9,10 +9,61 @@ import { pushUrlToIndex } from '../services/googleIndexingService.js';
 import { pushUrlsToIndexNow } from '../services/indexNowService.js';
 import { sendTelegramMessage } from '../services/telegramService.js';
 import { sendFacebookPost } from '../services/facebookService.js';
+import { buildSitemapFromPosts } from './generateSitemap.js';
+import { deployToHostinger } from './deployHostingerViaMcp.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const seedPath = path.resolve(__dirname, '../../frontend/lib/seedPosts.json');
+
+function detectTrueCategory(title, rewrittenTitle, sourceUrl, fallbackCategory) {
+  const t = (String(title || '') + ' ' + String(rewrittenTitle || '') + ' ' + String(sourceUrl || '')).toLowerCase();
+  if (
+    t.includes('final result') ||
+    t.includes('exam result') ||
+    t.includes('written result') ||
+    t.includes('marks') ||
+    t.includes('score card') ||
+    t.includes('scorecard') ||
+    t.includes('cutoff') ||
+    t.includes('cut off') ||
+    t.includes('cut-off') ||
+    t.includes('merit list') ||
+    t.includes('selection list') ||
+    t.includes('result declared') ||
+    t.includes('download result')
+  ) {
+    return 'Results';
+  }
+  if (
+    t.includes('answer key') ||
+    t.includes('ans key') ||
+    t.includes('response sheet') ||
+    t.includes('omr sheet') ||
+    t.includes('objection') ||
+    t.includes('paper solution')
+  ) {
+    return 'Answer Key';
+  }
+  if (
+    t.includes('admit card') ||
+    t.includes('hall ticket') ||
+    t.includes('call letter') ||
+    t.includes('exam city') ||
+    t.includes('city intimation') ||
+    t.includes('exam date')
+  ) {
+    return 'Admit Cards';
+  }
+  if (
+    t.includes('syllabus') ||
+    t.includes('exam pattern') ||
+    t.includes('scheme of exam')
+  ) {
+    return 'Syllabus';
+  }
+  return fallbackCategory || 'Latest Jobs';
+}
 
 async function runManualFullUpdate() {
   console.log('================================================================');
@@ -111,6 +162,8 @@ async function runManualFullUpdate() {
           continue;
         }
 
+        const detectedCategory = detectTrueCategory(rawData.title, details.title, rawData.sourceUrl, rawData.category);
+
         const postRecord = {
           _id: `scraped_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
           title: rawData.title,
@@ -119,7 +172,7 @@ async function runManualFullUpdate() {
           metaDescription: seo.metaDescription || rawData.shortInfo,
           slug: slug,
           primaryKeyword: seo.primaryKeyword || '',
-          category: rawData.category,
+          category: detectedCategory,
           sourceUrl: rawData.sourceUrl,
           organizationName: details.organizationName || rawData.organization,
           postName: details.postName || rawData.title,
@@ -177,6 +230,27 @@ async function runManualFullUpdate() {
   console.log(`================================================================\n`);
 
   console.log(`💾 seedPosts.json finalized! Total posts in dataset: ${existingPosts.length}`);
+
+  if (newScrapedPosts.length > 0) {
+    console.log(`\n🏗️ Step A: Regenerating sitemap.xml...`);
+    buildSitemapFromPosts(existingPosts);
+
+    console.log(`🏗️ Step B: Building Next.js static export for production...`);
+    try {
+      execSync('npm run build', { cwd: path.resolve(__dirname, '../../frontend'), stdio: 'inherit' });
+      console.log(`✅ Static export generated in frontend/out`);
+    } catch (buildErr) {
+      console.error(`❌ Build error: ${buildErr.message}`);
+    }
+
+    console.log(`🚀 Step C: Deploying to Hostinger via Hostinger MCP...`);
+    try {
+      await deployToHostinger();
+      console.log(`✅ Deploy to Hostinger completed successfully!`);
+    } catch (deployErr) {
+      console.error(`⚠️ Hostinger automated deployment warning: ${deployErr.message}`);
+    }
+  }
 
   return { newPostsCount: newScrapedPosts.length, totalPosts: existingPosts.length };
 }

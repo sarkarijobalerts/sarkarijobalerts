@@ -19,6 +19,8 @@ export function buildSitemapFromPosts(posts = []) {
     '/latest-jobs/',
     '/admit-cards/',
     '/results/',
+    '/answer-key/',
+    '/syllabus/',
     '/about/',
     '/contact/',
     '/privacy-policy/',

@@ -81,7 +81,7 @@ export async function deployToHostinger() {
                   operation: 'hosting_cache_clear',
                   params: {
                     domain: 'sarkarijobalerts.com',
-                    username: 'u340027669',
+                    scope: 'all',
                   },
                 },
               },

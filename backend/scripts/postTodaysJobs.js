@@ -1,14 +1,27 @@
 import fs from 'fs';
 import path from 'path';
+import https from 'https';
+import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { sendTelegramMessage } from '../services/telegramService.js';
 import { sendFacebookPost } from '../services/facebookService.js';
+import { deployToHostinger } from './deployHostingerViaMcp.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const seedPath = path.resolve(__dirname, '../../frontend/lib/seedPosts.json');
+
+function checkUrlStatus(url) {
+  return new Promise((resolve) => {
+    https.get(url, (res) => {
+      resolve(res.statusCode);
+    }).on('error', () => {
+      resolve(0);
+    });
+  });
+}
 
 async function postTodaysJobs() {
   console.log('================================================================');
@@ -22,8 +35,8 @@ async function postTodaysJobs() {
   }
 
   const posts = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
-  const todayISO = new Date().toISOString().split('T')[0]; // "2026-09-19"
-  const todayGB = new Date().toLocaleDateString('en-GB'); // "19/09/2026" (fallback)
+  const todayISO = new Date().toISOString().split('T')[0];
+  const todayGB = new Date().toLocaleDateString('en-GB');
 
   const todaysPosts = posts.filter(p => {
     return (p.publishedDate && p.publishedDate.startsWith(todayISO)) || 
@@ -31,6 +44,31 @@ async function postTodaysJobs() {
   });
 
   console.log(`📊 Found ${todaysPosts.length} post(s) updated today (${todayISO}).\n`);
+
+  if (todaysPosts.length === 0) {
+    console.log('No posts to broadcast today.');
+    return;
+  }
+
+  // Pre-flight check: Ensure live URLs don't 404 before broadcasting
+  const samplePost = todaysPosts[0];
+  const sampleUrl = `https://sarkarijobalerts.com/job/${samplePost.slug}/`;
+  console.log(`🔍 Pre-flight check on sample URL: ${sampleUrl}`);
+  const status = await checkUrlStatus(sampleUrl);
+
+  if (status === 404 || status === 0) {
+    console.warn(`⚠️ Sample post returned status ${status} (404/not live). Triggering build & deploy first...`);
+    try {
+      execSync('npm run build', { cwd: path.resolve(__dirname, '../../frontend'), stdio: 'inherit' });
+      await deployToHostinger();
+      console.log('✅ Deployment complete! Proceeding with social media broadcast.');
+    } catch (deployErr) {
+      console.error(`❌ Automatic deployment failed: ${deployErr.message}. Aborting broadcast to avoid posting broken links.`);
+      process.exit(1);
+    }
+  } else {
+    console.log(`✅ Pre-flight check passed (HTTP ${status}).`);
+  }
 
   let successCount = 0;
 
