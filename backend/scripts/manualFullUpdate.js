@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import https from 'https';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 import dotenv from 'dotenv';
@@ -15,6 +16,28 @@ import { deployToHostinger } from './deployHostingerViaMcp.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const seedPath = path.resolve(__dirname, '../../frontend/lib/seedPosts.json');
+
+function checkUrlStatus(url) {
+  return new Promise((resolve) => {
+    https.get(url, (res) => {
+      resolve(res.statusCode);
+    }).on('error', () => {
+      resolve(0);
+    });
+  });
+}
+
+async function verifyUrlLiveWithRetries(url, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const status = await checkUrlStatus(url);
+    if (status === 200) {
+      return true;
+    }
+    console.warn(`   ⚠️ URL returned status ${status} on attempt ${attempt}/${maxRetries}. Retrying in 4s...`);
+    await new Promise((r) => setTimeout(r, 4000));
+  }
+  return false;
+}
 
 function detectTrueCategory(title, rewrittenTitle, sourceUrl, fallbackCategory) {
   const t = (String(title || '') + ' ' + String(rewrittenTitle || '') + ' ' + String(sourceUrl || '')).toLowerCase();
@@ -199,26 +222,6 @@ async function runManualFullUpdate() {
         // Save incrementally after each post so progress is never lost on interruption
         fs.writeFileSync(seedPath, JSON.stringify(existingPosts, null, 2), 'utf8');
         console.log(`   ✅ Successfully processed & saved post: "${postRecord.rewrittenTitle}" (Total: ${existingPosts.length})`);
-        
-        // Push the new URL to Google Indexing API & IndexNow
-        const newPostUrl = `https://sarkarijobalerts.com/job/${slug}/`;
-        console.log(`   🚀 Pushing to Google Indexing API: ${newPostUrl}`);
-        await pushUrlToIndex(newPostUrl, 'URL_UPDATED');
-        console.log(`   🚀 Pushing to IndexNow API: ${newPostUrl}`);
-        await pushUrlsToIndexNow(newPostUrl);
-
-        // Trigger Social Media Posts
-        const skipTelegram = process.argv.includes('--skip-telegram');
-        const skipFacebook = process.argv.includes('--skip-facebook');
-        if (!skipTelegram || !skipFacebook) {
-          console.log(`   📱 Pushing to Social Media Channels...`);
-          if (!skipTelegram) {
-            await sendTelegramMessage(postRecord).catch(err => console.error(`   ❌ [Telegram] ${err.message}`));
-          }
-          if (!skipFacebook) {
-            await sendFacebookPost(postRecord).catch(err => console.error(`   ❌ [Facebook] ${err.message}`));
-          }
-        }
       }
     } catch (catErr) {
       console.error(`❌ Error processing portal ${portal.name}: ${catErr.message}`);
@@ -237,18 +240,63 @@ async function runManualFullUpdate() {
 
     console.log(`🏗️ Step B: Building Next.js static export for production...`);
     try {
-      execSync('npm run build', { cwd: path.resolve(__dirname, '../../frontend'), stdio: 'inherit' });
+      execSync('npm run build', {
+        cwd: path.resolve(__dirname, '../../frontend'),
+        stdio: 'inherit',
+        env: { ...process.env, NODE_ENV: 'production' },
+      });
       console.log(`✅ Static export generated in frontend/out`);
     } catch (buildErr) {
       console.error(`❌ Build error: ${buildErr.message}`);
+      throw new Error(`Build failed. Aborting deployment and broadcasts to prevent 404s.`);
     }
 
-    console.log(`🚀 Step C: Deploying to Hostinger via Hostinger MCP...`);
+    console.log(`🚀 Step C: Deploying to Hostinger via Hostinger MCP & clearing cache...`);
     try {
       await deployToHostinger();
-      console.log(`✅ Deploy to Hostinger completed successfully!`);
+      console.log(`✅ Deploy to Hostinger and cache purge completed successfully!`);
     } catch (deployErr) {
-      console.error(`⚠️ Hostinger automated deployment warning: ${deployErr.message}`);
+      console.error(`❌ Hostinger deployment failed: ${deployErr.message}`);
+      throw new Error(`Deployment failed. Aborting broadcasts to prevent 404s.`);
+    }
+
+    console.log(`\n🔍 Step D: Pre-flight verifying live HTTP 200 status for all new posts...`);
+    const verifiedPosts = [];
+
+    for (const post of newScrapedPosts) {
+      const liveUrl = `https://sarkarijobalerts.com/job/${post.slug}/`;
+      const isLive = await verifyUrlLiveWithRetries(liveUrl, 3);
+      if (isLive) {
+        console.log(`   ✅ Live HTTP 200 verified: ${liveUrl}`);
+        verifiedPosts.push(post);
+      } else {
+        console.error(`   ❌ Verification failed (NOT HTTP 200). Skipping broadcast for: ${liveUrl}`);
+      }
+    }
+
+    console.log(`\n📢 Step E: Broadcasting verified live posts (${verifiedPosts.length}/${newScrapedPosts.length}) to Indexing & Social Media...`);
+    const skipTelegram = process.argv.includes('--skip-telegram');
+    const skipFacebook = process.argv.includes('--skip-facebook');
+
+    for (const post of verifiedPosts) {
+      const postUrl = `https://sarkarijobalerts.com/job/${post.slug}/`;
+
+      // Google Indexing API & IndexNow
+      console.log(`   🚀 Pushing to Google Indexing API: ${postUrl}`);
+      await pushUrlToIndex(postUrl, 'URL_UPDATED').catch(err => console.error(`   ❌ [Google Indexing] ${err.message}`));
+      console.log(`   🚀 Pushing to IndexNow API: ${postUrl}`);
+      await pushUrlsToIndexNow(postUrl).catch(err => console.error(`   ❌ [IndexNow] ${err.message}`));
+
+      // Social Media Channels
+      if (!skipTelegram) {
+        await sendTelegramMessage(post).catch(err => console.error(`   ❌ [Telegram] ${err.message}`));
+      }
+      if (!skipFacebook) {
+        await sendFacebookPost(post).catch(err => console.error(`   ❌ [Facebook] ${err.message}`));
+      }
+
+      // Small delay between broadcasts to avoid rate limits
+      await new Promise(r => setTimeout(r, 1500));
     }
   }
 
