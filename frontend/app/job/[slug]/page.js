@@ -225,8 +225,8 @@ export default async function JobDetailPage({ params }) {
       {/* Schema.org NewsArticle Structured Data (Machine Readability & AI Discoverability) */}
       <ArticleSchema post={post} />
 
-      {/* Schema.org JobPosting Structured Data */}
-      <JobPostingSchema post={post} />
+      {/* Schema.org JobPosting Structured Data (Strictly for active recruitment jobs) */}
+      {(!post.category || post.category === 'Latest Jobs') && <JobPostingSchema post={post} />}
 
       {/* Back Navigation */}
       <Link
