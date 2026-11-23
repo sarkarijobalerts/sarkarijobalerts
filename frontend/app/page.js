@@ -38,12 +38,26 @@ export const metadata = {
   },
 };
 
+function toCardItem(p) {
+  return {
+    _id: p._id,
+    slug: p.slug,
+    category: p.category,
+    postDate: p.postDate,
+    title: p.title,
+    rewrittenTitle: p.rewrittenTitle,
+    organizationName: p.organizationName,
+    organization: p.organization,
+    totalVacancies: p.totalVacancies,
+  };
+}
+
 export default async function HomePage() {
-  const latestJobs = seedPosts.filter((p) => p.category === 'Latest Jobs');
-  const admitCards = seedPosts.filter((p) => p.category === 'Admit Cards');
-  const results = seedPosts.filter((p) => p.category === 'Results');
-  const answerKeys = seedPosts.filter((p) => p.category === 'Answer Key');
-  const syllabus = seedPosts.filter((p) => p.category === 'Syllabus');
+  const latestJobs = seedPosts.filter((p) => p.category === 'Latest Jobs').slice(0, 50).map(toCardItem);
+  const admitCards = seedPosts.filter((p) => p.category === 'Admit Cards').slice(0, 50).map(toCardItem);
+  const results = seedPosts.filter((p) => p.category === 'Results').slice(0, 50).map(toCardItem);
+  const answerKeys = seedPosts.filter((p) => p.category === 'Answer Key').slice(0, 30).map(toCardItem);
+  const syllabus = seedPosts.filter((p) => p.category === 'Syllabus').slice(0, 30).map(toCardItem);
 
   return (
     <div className="pb-12">

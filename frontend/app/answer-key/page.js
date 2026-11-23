@@ -37,8 +37,22 @@ export const metadata = {
   },
 };
 
+function toCardItem(p) {
+  return {
+    _id: p._id,
+    slug: p.slug,
+    category: p.category,
+    postDate: p.postDate,
+    title: p.title,
+    rewrittenTitle: p.rewrittenTitle,
+    organizationName: p.organizationName,
+    organization: p.organization,
+    totalVacancies: p.totalVacancies,
+  };
+}
+
 export default function AnswerKeyPage() {
-  const jobs = seedPosts.filter((p) => p.category === 'Answer Key');
+  const jobs = seedPosts.filter((p) => p.category === 'Answer Key').map(toCardItem);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

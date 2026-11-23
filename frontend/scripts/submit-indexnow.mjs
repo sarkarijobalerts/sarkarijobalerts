@@ -13,8 +13,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const HOST = 'sarkarijobalerts.com';
-const KEY = 'a1b2c3d4e5f678901234567890abcdef';
-const KEY_LOCATION = 'https://sarkarijobalerts.com/a1b2c3d4e5f678901234567890abcdef.txt';
+const KEY = '1c294ec05428f9aa1f32997759a6b593';
+const KEY_LOCATION = 'https://sarkarijobalerts.com/1c294ec05428f9aa1f32997759a6b593.txt';
 
 const staticPages = [
   'https://sarkarijobalerts.com/',

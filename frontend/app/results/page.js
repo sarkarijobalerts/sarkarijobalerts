@@ -6,10 +6,10 @@ import { Trophy, ArrowRight, Building2, Calendar, ArrowLeft } from 'lucide-react
 export const dynamic = 'force-static';
 
 export const metadata = {
-  title: 'Sarkari Results 2026 – Cutoff & Merit List',
+  title: 'Sarkari Result 2026 – Cutoff & Merit',
   description: 'Check official government exam results, zone-wise cutoff lists, merit PDFs, and scorecards for RRB NTPC, UP Police, SSC, UGC NET, and Board Exams.',
   openGraph: {
-    title: 'Sarkari Results 2026 – Cutoff & Merit List',
+    title: 'Sarkari Result 2026 – Cutoff & Merit',
     description: 'Check official government exam results, zone-wise cutoff lists, merit PDFs, and scorecards for RRB NTPC, UP Police, SSC, UGC NET, and Board Exams.',
     url: 'https://sarkarijobalerts.com/results/',
     siteName: 'SarkariJobAlerts',
@@ -37,8 +37,22 @@ export const metadata = {
   },
 };
 
+function toCardItem(p) {
+  return {
+    _id: p._id,
+    slug: p.slug,
+    category: p.category,
+    postDate: p.postDate,
+    title: p.title,
+    rewrittenTitle: p.rewrittenTitle,
+    organizationName: p.organizationName,
+    organization: p.organization,
+    totalVacancies: p.totalVacancies,
+  };
+}
+
 export default function ResultsPage() {
-  const results = seedPosts.filter((p) => p.category === 'Results');
+  const results = seedPosts.filter((p) => p.category === 'Results').map(toCardItem);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

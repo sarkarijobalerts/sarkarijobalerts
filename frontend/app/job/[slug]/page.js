@@ -94,11 +94,14 @@ export async function generateMetadata({ params }) {
     };
   }
 
+  const brand = ' | SarkariJobAlerts';
+  const maxTitleLen = 55;
+  const maxRawLen = maxTitleLen - brand.length; // 36 characters
   let rawTitle = cleanText(post.rewrittenTitle || post.title || post.postName, 60);
-  let finalTitle = `${rawTitle} | SarkariJobAlerts`;
-  if (finalTitle.length > 70) {
-    finalTitle = `${rawTitle.slice(0, 50).trim()}... | SarkariJobAlerts`;
+  if (rawTitle.length > maxRawLen) {
+    rawTitle = `${rawTitle.slice(0, maxRawLen - 3).trim()}...`;
   }
+  const finalTitle = `${rawTitle}${brand}`;
 
   let description = cleanText(post.metaDescription || post.shortInfo, 160);
   if (!description || description.length < 50) {
