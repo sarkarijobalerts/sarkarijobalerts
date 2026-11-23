@@ -2,69 +2,183 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sarkarijobalerts.com/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>always</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/latest-jobs/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/admit-cards/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/results/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/answer-key/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/syllabus/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/about/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/contact/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/disclaimer/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/privacy-policy/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/terms-and-conditions/</loc>
-    <lastmod>2026-11-22T12:47:21.063Z</lastmod>
+    <lastmod>2026-11-23T04:42:53.435Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/ctet-january-2021-result-2021-1682/</loc>
+    <lastmod>2026-11-23T04:42:51.683Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/ncl-paramedical-recruitment-2020/</loc>
+    <lastmod>2026-11-23T04:42:46.318Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/bihar-police-lady-constable-final-result-2021/</loc>
+    <lastmod>2026-11-23T04:42:14.429Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/upsc-capf-ac-2020-assistant-commandants-recruitment/</loc>
+    <lastmod>2026-11-23T04:41:41.479Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/mpesb-middle-primary-teacher-recruitment-2025/</loc>
+    <lastmod>2026-11-23T04:40:43.728Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/nta-cuet-pg-2025-admissions-guide/</loc>
+    <lastmod>2026-11-23T04:40:02.529Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/sci-court-master-spa-pa-recruitment-2024/</loc>
+    <lastmod>2026-11-23T04:39:31.118Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/rrb-alp-recruitment-2024-18799-posts/</loc>
+    <lastmod>2026-11-23T04:38:53.118Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/rrb-ntpc-graduate-level-recruitment-2024-25/</loc>
+    <lastmod>2026-11-23T04:37:20.397Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/oriental-insurance-oicl-ao-2025-recruitment/</loc>
+    <lastmod>2026-11-23T04:36:34.662Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/mppsc-mining-inspector-2025-final-result/</loc>
+    <lastmod>2026-11-23T04:36:00.285Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/indian-army-agniveer-recruitment-2026-27/</loc>
+    <lastmod>2026-11-23T04:35:24.309Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/uppsc-assistant-prosecution-officer-apo-2025-2026/</loc>
+    <lastmod>2026-11-23T04:34:46.918Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/iert-prayagraj-admissions-2026-diploma-courses/</loc>
+    <lastmod>2026-11-23T04:34:08.680Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/pgcil-diploma-trainee-non-executives-recruitment-2026/</loc>
+    <lastmod>2026-11-23T04:33:41.857Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/mp-nhm-contract-staff-nurse-recruitment-2026-27/</loc>
+    <lastmod>2026-11-23T04:32:38.867Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/dvc-executive-trainee-recruitment-2026/</loc>
+    <lastmod>2026-11-23T04:32:06.506Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/sidbi-assistant-manager-manager-recruitment-2026/</loc>
+    <lastmod>2026-11-23T04:31:29.640Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarkarijobalerts.com/job/bihar-vidhan-sabha-recruitment-2024-aso-clerk-reporter/</loc>
+    <lastmod>2026-11-23T04:30:53.922Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sarkarijobalerts.com/job/ssc-delhi-police-executive-constable-final-result-reserve-list-2023-0875/</loc>
